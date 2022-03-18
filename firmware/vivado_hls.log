@@ -1,0 +1,14 @@
+
+****** Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.2.1 (64-bit)
+  **** SW Build 2729669 on Thu Dec  5 04:48:12 MST 2019
+  **** IP Build 2729494 on Thu Dec  5 07:38:25 MST 2019
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+source /opt/Xilinx/Vivado/2019.2/scripts/vivado_hls/hls.tcl -notrace
+INFO: Applying HLS Y2K22 patch v1.2 for IP revision
+INFO: [HLS 200-10] Running '/opt/Xilinx/Vivado/2019.2/bin/unwrapped/lnx64.o/vivado_hls'
+INFO: [HLS 200-10] For user 'yanlunhuang' on host 'athens.EE.NCTU.edu.tw' (Linux_x86_64 version 4.4.0-210-generic) on Fri Mar 18 10:29:49 CST 2022
+INFO: [HLS 200-10] On os Ubuntu 16.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/yanlunhuang/deepcalo-with-hls-4-ml/demos/atlas_specific_usecases/train_recommended_electron_models_for_hls4ml/3_25/Deepcalo_model/firmware'
+ERROR [AP-1] Could not read script 'build_prj.tcl'.
+INFO: [Common 17-206] Exiting vivado_hls at Fri Mar 18 10:29:49 2022...
