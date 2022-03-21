@@ -60,7 +60,8 @@ void normalize_me(
             } else {
                 norm_index = i % CONFIG_T::n_filt;
             }
-            out_data = CONFIG_T::template product<data_T, typename CONFIG_T::scale_t,res_T>::product(in_data, scale[norm_index]) + bias[norm_index];
+            out_data = product_dense<data_T, typename CONFIG_T::scale_t,res_T>(in_data, scale[norm_index]) + bias[norm_index];
+	    //out_data = CONFIG_T::template product<data_T, typename CONFIG_T::scale_t,res_T>::product(in_data, scale[norm_index]) + bias[norm_index];
 
 			res.write(out_data);
     }
