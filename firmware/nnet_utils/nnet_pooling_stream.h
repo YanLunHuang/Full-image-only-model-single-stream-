@@ -269,7 +269,7 @@ template<class data_T, class res_T, typename CONFIG_T>
     static int sY = 0; // stride Y
 
     data_T tmpdata[CONFIG_T::n_chan]; 
-    #pragma HLS STREAM variable=tmpdata depth=1 dim=1
+   
     
     for (unsigned i_ih = 0; i_ih < CONFIG_T::in_height * CONFIG_T::in_width; i_ih++) {
           
