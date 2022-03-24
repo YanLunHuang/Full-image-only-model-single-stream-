@@ -77,7 +77,7 @@ void relu(hls::stream<data_T> &data, hls::stream<res_T> &res) {
 template<class data_T, class res_T, typename CONFIG_T>
 void relu_me(hls::stream<data_T> &data, hls::stream<res_T> &res) {
     for (int i = 0; i < CONFIG_T::n_in; i++) {
-         //#pragma HLS PIPELINE
+         #pragma HLS PIPELINE
 
         data_T in_data = data.read();
         res_T out_data;
