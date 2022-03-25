@@ -53,7 +53,7 @@ void normalize_me(
         #pragma HLS DATA_PACK variable=out_data
 
 
-            #pragma HLS UNROLL
+           // #pragma HLS UNROLL
             int norm_index;
             if (CONFIG_T::n_filt==-1 ) {
                 norm_index = i;
