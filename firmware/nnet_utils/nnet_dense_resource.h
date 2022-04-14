@@ -356,12 +356,12 @@ void dense_large_rf_leq_nin(
     }
     */
     for (int ir = 0; ir < rufactor; ir++) {
-        //#pragma HLS PIPELINE II=1 
+        #pragma HLS PIPELINE II=1 
         typename CONFIG_T::accum_t tmpmult[block_factor];
-       // #pragma HLS ARRAY_PARTITION variable=tmpmult complete  
+        #pragma HLS ARRAY_PARTITION variable=tmpmult complete  
 	unsigned in_index=ir;
 	for (int im = 0; im < block_factor; im++) {
-            //#pragma HLS UNROLL
+            #pragma HLS UNROLL
             unsigned w_index  =  ir + (rufactor*im); 
 	    tmpmult[im] = product_dense<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::accum_t>(data[in_index], weights[w_index]);
 	    in_index += rufactor;
@@ -370,7 +370,7 @@ void dense_large_rf_leq_nin(
             }
         }
 	for (int im = 0; im < block_factor; im++) {
-         //#pragma HLS UNROLL
+          #pragma HLS UNROLL
 	 //tmpacc[im] += tmpmult[im];
 	 unsigned out_index =   im/multscale;
 	 acc[out_index] += tmpmult[im];
