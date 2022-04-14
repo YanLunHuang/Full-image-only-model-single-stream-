@@ -66,7 +66,7 @@ if {$opt(reset)} {
 }
 catch {config_array_partition -maximum_size 4096}
 config_compile -name_max_length 60
-set_part {xczu9eg-ffvb1156-2-e}
+set_part {xcvu9p-flgb2104-2-i}
 create_clock -period 5 -name default
 
 
