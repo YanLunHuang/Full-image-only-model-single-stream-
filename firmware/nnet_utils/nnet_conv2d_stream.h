@@ -140,7 +140,7 @@ void conv_2d_large_cl_nopad_pad_me(
     #pragma HLS ARRAY_RESHAPE variable=tmpdata complete
 
     static data_T layer_in[CONFIG_T::filt_height*CONFIG_T::filt_width*CONFIG_T::n_chan];
-    //#pragma HLS ARRAY_RESHAPE variable=layer_in complete
+    #pragma HLS ARRAY_RESHAPE variable=layer_in complete
 
     //typename res_T::value_type layer_reluout[CONFIG_T::n_filt];
     //#pragma HLS ARRAY_RESHAPE variable=layer_reluout complete dim=0
