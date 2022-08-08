@@ -73,23 +73,14 @@ void myproject(
         nnet::load_weights_from_txt<model_default_t, 16>(b4, "b4.txt");
         nnet::load_weights_from_txt<model_default_t, 4608>(w9, "w9.txt");
         nnet::load_weights_from_txt<model_default_t, 32>(b9, "b9.txt");
-        nnet::load_weights_from_txt<model_default_t, 9216>(w13, "w13.txt");
         nnet::load_weights_from_txt<model_default_t, 32>(b13, "b13.txt");
-        nnet::load_weights_from_txt<model_default_t, 18432>(w18, "w18.txt");
         nnet::load_weights_from_txt<model_default_t, 64>(b18, "b18.txt");
-        nnet::load_weights_from_txt<model_default_t, 36864>(w22, "w22.txt");
         nnet::load_weights_from_txt<model_default_t, 64>(b22, "b22.txt");
-        nnet::load_weights_from_txt<model_default_t, 73728>(w27, "w27.txt");
         nnet::load_weights_from_txt<model_default_t, 128>(b27, "b27.txt");
-        nnet::load_weights_from_txt<model_default_t, 147456>(w31, "w31.txt");
         nnet::load_weights_from_txt<model_default_t, 128>(b31, "b31.txt");
-        nnet::load_weights_from_txt<model_default_t, 294912>(w36, "w36.txt");
         nnet::load_weights_from_txt<model_default_t, 256>(b36, "b36.txt");
-        nnet::load_weights_from_txt<model_default_t, 589824>(w40, "w40.txt");
         nnet::load_weights_from_txt<model_default_t, 256>(b40, "b40.txt");
-        nnet::load_weights_from_txt<model_default_t, 589824>(w45, "w45.txt");
         nnet::load_weights_from_txt<bias45_t, 256>(b45, "b45.txt");
-        nnet::load_weights_from_txt<model_default_t, 65536>(w49, "w49.txt");
         nnet::load_weights_from_txt<bias49_t, 256>(b49, "b49.txt");
         nnet::load_weights_from_txt<model_default_t, 256>(w53, "w53.txt");
         nnet::load_weights_from_txt<model_default_t, 1>(b53, "b53.txt");
@@ -125,7 +116,7 @@ void myproject(
 
     hls::stream<layer8_t> layer8_out("layer8_out");
     #pragma HLS STREAM variable=layer8_out depth=756
-    nnet::pooling2d_large_cl_nopad_pad_me<layer7_t, layer8_t, config8>(layer7_out, layer8_out); // max_pooling2d
+    nnet::pooling_me<layer7_t, layer8_t, config8>(layer7_out, layer8_out); // max_pooling2d
 
     hls::stream<layer57_t> layer57_out("layer57_out");
     #pragma HLS STREAM variable=layer57_out depth=870
@@ -153,7 +144,7 @@ void myproject(
 
     hls::stream<layer17_t> layer17_out("layer17_out");
     #pragma HLS STREAM variable=layer17_out depth=182
-    nnet::pooling2d_large_cl_nopad_pad_me<layer16_t, layer17_t, config17>(layer16_out, layer17_out); // max_pooling2d_1
+    nnet::pooling_me<layer16_t, layer17_t, config17>(layer16_out, layer17_out); // max_pooling2d_1
 
     hls::stream<layer59_t> layer59_out("layer59_out");
     #pragma HLS STREAM variable=layer59_out depth=240
@@ -181,7 +172,7 @@ void myproject(
 
     hls::stream<layer26_t> layer26_out("layer26_out");
     #pragma HLS STREAM variable=layer26_out depth=42
-    nnet::pooling2d_large_cl_nopad_pad_me<layer25_t, layer26_t, config26>(layer25_out, layer26_out); // max_pooling2d_2
+    nnet::pooling_me<layer25_t, layer26_t, config26>(layer25_out, layer26_out); // max_pooling2d_2
 
     hls::stream<layer61_t> layer61_out("layer61_out");
     #pragma HLS STREAM variable=layer61_out depth=72
@@ -209,7 +200,7 @@ void myproject(
 
     hls::stream<layer35_t> layer35_out("layer35_out");
     #pragma HLS STREAM variable=layer35_out depth=9
-    nnet::pooling2d_large_cl_nopad_pad_me<layer34_t, layer35_t, config35>(layer34_out, layer35_out); // max_pooling2d_3
+    nnet::pooling_me<layer34_t, layer35_t, config35>(layer34_out, layer35_out); // max_pooling2d_3
 
     hls::stream<layer63_t> layer63_out("layer63_out");
     #pragma HLS STREAM variable=layer63_out depth=25
@@ -237,7 +228,7 @@ void myproject(
 
     hls::stream<layer45_t> layer45_out("layer45_out");
     #pragma HLS STREAM variable=layer45_out depth=1
-    nnet::dense_large_stream_me<layer43_t, layer45_t, config45>(layer43_out, layer45_out, w45, b45); // dense
+    nnet::dense_ss<layer43_t, layer45_t, config45>(layer43_out, layer45_out, w45, b45); // dense
 
     hls::stream<layer48_t> layer48_out("layer48_out");
     #pragma HLS STREAM variable=layer48_out depth=1
@@ -245,7 +236,7 @@ void myproject(
 
     hls::stream<layer49_t> layer49_out("layer49_out");
     #pragma HLS STREAM variable=layer49_out depth=1
-    nnet::dense_large_stream_me<layer48_t, layer49_t, config49>(layer48_out, layer49_out, w49, b49); // dense_1
+    nnet::dense_ss<layer48_t, layer49_t, config49>(layer48_out, layer49_out, w49, b49); // dense_1
 
     hls::stream<layer52_t> layer52_out("layer52_out");
     #pragma HLS STREAM variable=layer52_out depth=1
@@ -253,7 +244,7 @@ void myproject(
 
     hls::stream<layer53_t> layer53_out("layer53_out");
     #pragma HLS STREAM variable=layer53_out depth=1
-    nnet::dense_large_stream_me<layer52_t, layer53_t, config53>(layer52_out, layer53_out, w53, b53); // dense_2
+    nnet::dense_ss<layer52_t, layer53_t, config53>(layer52_out, layer53_out, w53, b53); // dense_2
 
     nnet::relu_me<layer53_t, result_t, relu_config55>(layer53_out, layer55_out); // activation
 
