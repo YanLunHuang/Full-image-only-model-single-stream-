@@ -597,7 +597,7 @@ void dense_large(
   #pragma HLS INLINE region
   
     if (CONFIG_T::reuse_factor <= CONFIG_T::n_in) {
-        std::cout<< "USE DENSE LARGE1" << std::endl;
+        //std::cout<< "USE DENSE LARGE1" << std::endl;
         dense_large_rf_leq_nin<data_T, res_T, CONFIG_T>(data, res, weights, biases);
     } else if (CONFIG_T::reuse_factor % CONFIG_T::n_in == 0) {
         std::cout<< "USE DENSE LARGE2" << std::endl;
@@ -680,7 +680,43 @@ void dense_large_stream_me(
 
 }
 
-
+template<class data_T, class res_T, typename CONFIG_T>
+void dense_ss(
+      hls::stream<data_T> &data,
+      hls::stream<res_T>  &res,
+      typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out],
+      typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
+      
+	  const int block_factor = DIV_ROUNDUP(CONFIG_T::n_out, CONFIG_T::reuse_factor);
+      #pragma HLS ARRAY_RESHAPE variable=weights block factor=CONFIG_T::n_out
+      #pragma HLS ARRAY_PARTITION variable=biases complete
+      data_T tmpdata;
+      res_T tmpres;
+	  
+      typename CONFIG_T::accum_t acc[CONFIG_T::n_out];
+      #pragma HLS ARRAY_PARTITION variable=acc complete
+      
+      InitAccum:
+      for (int iacc = 0; iacc < CONFIG_T::n_out; iacc++) {
+          #pragma HLS UNROLL
+          acc[iacc] = (typename CONFIG_T::accum_t) biases[iacc];
+      }
+    
+     for(int i_in = 0; i_in < CONFIG_T::n_in; i_in++) {
+        #pragma HLS PIPELINE 
+        tmpdata = data.read();
+        for(unsigned i_out = 0; i_out < CONFIG_T::n_out; i_out++) {
+          //#pragma HLS UNROLL factor=block_factor
+          unsigned w_index  =  i_in + (CONFIG_T::n_in*i_out); 
+          acc[i_out] += product_dense<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::accum_t>(tmpdata, weights[w_index]);
+        }
+     }
+     ResWrite: for(unsigned i_out = 0; i_out < CONFIG_T::n_out; i_out++) {
+       #pragma HLS UNROLL
+       tmpres = (res_T) acc[i_out];
+       res.write(tmpres);
+     }
+}
 
 }
 
