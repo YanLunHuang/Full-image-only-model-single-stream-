@@ -21,6 +21,7 @@ void resize_nearest_me(
         #pragma HLS PIPELINE II=ii
         
         for(unsigned l = 0;l < CONFIG_T::n_chan;l++) {
+			#pragma HLS UNROLL
 			in_data[l] = image.read();
 		}
 
@@ -40,6 +41,39 @@ void resize_nearest_me(
         }
     }
 }
+
+template<class data_T, typename CONFIG_T>
+void resize_nearest_me2(
+    hls::stream<data_T> image[CONFIG_T::n_chan],
+    hls::stream<data_T> resized[CONFIG_T::n_chan]
+) {
+    assert(CONFIG_T::new_height % CONFIG_T::height == 0);
+    assert(CONFIG_T::new_width % CONFIG_T::width == 0);
+    constexpr unsigned ratio_height = CONFIG_T::new_height / CONFIG_T::height;
+    constexpr unsigned ratio_width = CONFIG_T::new_width / CONFIG_T::width;
+    constexpr unsigned ii = ratio_height * ratio_width;
+    data_T in_data[CONFIG_T::n_chan];
+    #pragma HLS ARRAY_PARTITION variable=in_data complete
+
+    ResizeImage: for (unsigned i = 0; i < CONFIG_T::height * CONFIG_T::width; i++) {
+        #pragma HLS PIPELINE II=ii
+        
+        for(unsigned l = 0;l < CONFIG_T::n_chan;l++) {
+            #pragma HLS UNROLL
+            in_data[l] = image[l].read();
+        }
+
+        ResizeNew: for (unsigned j = 0; j < ratio_height * ratio_width; j++) {
+            #pragma HLS UNROLL
+            ResizeChan: for (unsigned k = 0; k < CONFIG_T::n_chan; k++) {
+                #pragma HLS UNROLL
+                data_T out_data = in_data[k];
+                resized[k].write(out_data);
+            }
+        }
+    }
+}
+
 
 template<class data_T, typename CONFIG_T>
 void resize_nearest(

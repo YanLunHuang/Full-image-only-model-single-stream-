@@ -331,8 +331,245 @@ template<class data_T, class res_T, typename CONFIG_T>
   }
 }
 
+template<class data_T, class res_T, typename CONFIG_T>
+  void pooling2d_large_cl_nopad_pad_me2(
+		    hls::stream<data_T> data[CONFIG_T::n_chan],
+		    hls::stream<res_T>  res[CONFIG_T::n_chan]) { 
 
+    //#pragma HLS PIPELINE
 
+    assert(CONFIG_T::pad_top == 0 && CONFIG_T::pad_bottom == 0 && CONFIG_T::pad_left == 0 && CONFIG_T::pad_right == 0);
+    std::cout<< "USE POOL2D LARGE" << std::endl;
+    
+    
+    const static int rowsize = (CONFIG_T::in_width+CONFIG_T::pad_left+CONFIG_T::pad_right);
+
+    static ap_shift_reg<data_T, rowsize> layer_in_row[(CONFIG_T::filt_height)-1][CONFIG_T::n_filt];
+    #pragma HLS ARRAY_RESHAPE variable=layer_in_row complete dim=2
+
+    static data_T layer_in[CONFIG_T::pool_height*CONFIG_T::pool_width*CONFIG_T::n_filt];
+    #pragma HLS ARRAY_RESHAPE variable=layer_in complete dim=0
+
+    const static int lShiftX = CONFIG_T::pool_width - 1;
+    const static int lShiftY = CONFIG_T::pool_height - 1;
+    static int pX = 0; // pixel X 
+    static int pY = 0; // pixel Y
+    static int sX = 0; // stride X
+    static int sY = 0; // stride Y
+
+    data_T tmpdata[CONFIG_T::n_chan]; 
+   #pragma HLS ARRAY_RESHAPE variable=tmpdata complete dim=0
+    
+    for (unsigned i_ih = 0; i_ih < CONFIG_T::in_height * CONFIG_T::in_width; i_ih++) {
+          
+
+      for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
+        #pragma HLS UNROLL      
+			tmpdata[i0] = data[i0].read(); 
+      }
+      
+      
+       
+      nnet::cnnshift_arr<data_T,res_T,CONFIG_T>(tmpdata,layer_in_row,layer_in);
+      if ((sX - lShiftX) == 0 && (sY - lShiftY) == 0 && pY > lShiftY - 1 && pX > lShiftX - 1) {
+          
+          for(unsigned i1 = 0; i1 < CONFIG_T::n_filt; i1++) { 
+           //#pragma HLS UNROLL
+           
+               data_T pool[CONFIG_T::pool_height * CONFIG_T::pool_width];
+               #pragma HLS ARRAY_RESHAPE variable=pool complete dim=0
+               
+               for(unsigned i2 = 0; i2 < CONFIG_T::pool_height*CONFIG_T::pool_width; i2++) { 
+                  #pragma HLS UNROLL
+    	            pool[i2] = layer_in[i2 * CONFIG_T::n_filt + i1];
+               }
+               //out[i1] = pool_op<typename data_T::value_type, CONFIG_T::pool_height*CONFIG_T::pool_width, CONFIG_T::pool_op>(pool);
+                data_T pool_res = pool[0];
+                for(int i = 1; i < CONFIG_T::pool_height*CONFIG_T::pool_width; i++){
+                    pool_res = pool[i] > pool_res ? pool[i] : pool_res;
+                }
+ 
+			   res[i1].write(pool_res);
+               
+           }
+		
+    }
+    // Counter Housekeeping
+    if (pX + 1 == CONFIG_T::in_width)  // Includes padding, end of line (padded)
+    {
+        pX = 0;
+        sX = 0;
+        if (pY + 1 == CONFIG_T::in_height) {  // Reached bottom of image
+            pY = 0;
+            sY = 0;
+        } else { // Next line
+            pY = pY + 1;
+            // Update stride (threshold) ? subtract stride : increment stride
+            sY = ((sY - lShiftY) == 0) ? sY - CONFIG_T::stride_height + 1 : sY + 1; 
+        }
+    } else {
+        pX = pX + 1;
+        // Update stride (threshold) ? subtract stride : increment stride
+        sX = ((sX - lShiftX) == 0) ? sX - CONFIG_T::stride_width + 1 : sX + 1; 
+    }
+    
+    
+  }
+}
+
+template<class data_T, class res_T, typename CONFIG_T>
+  void pooling_me(
+		    hls::stream<data_T> &data,
+		    hls::stream<res_T>  &res) { 
+			
+      //decide the restriction
+      int cal_height,cal_width;
+      if(CONFIG_T::in_height%2 == 0)cal_height = CONFIG_T::in_height;
+      else cal_height = CONFIG_T::in_height-1;
+      if(CONFIG_T::in_width%2 == 0)cal_width = CONFIG_T::in_width;
+      else cal_width = CONFIG_T::in_width-1;
+	  
+	  //start to calculate
+      data_T memory1[CONFIG_T::in_width][CONFIG_T::n_filt];
+	  #pragma HLS ARRAY_PARTITION variable=memory1 cyclic factor=2 dim=1
+      data_T memory2[CONFIG_T::n_filt];
+      data_T tmpt,tmpt2,tmpt3,tmpt4,tmpt5;
+	  data_T pool[4];
+	  #pragma HLS ARRAY_PARTITION variable=pool complete
+	  
+	  int cal_height2 = cal_height/2;
+      for(int i=0; i<cal_height2; i++){
+		  //read data
+		  for(int j=0; j<cal_width; j++){
+            for(int k=0; k<CONFIG_T::n_chan; k++){
+				#pragma hls pipeline II=1
+				tmpt = data.read();
+				memory1[j][k] = tmpt;
+			}
+		  }
+		  for(int k=0; k<CONFIG_T::n_chan; k++){
+				#pragma hls pipeline II=1
+				if(CONFIG_T::in_width > cal_width){
+					tmpt = data.read();
+				}
+		  }
+		  //decide which is the biggest
+		  int cal_width2 = cal_width/2;
+		  for(int j=0; j<cal_width2; j++){
+			for(int k=0; k<CONFIG_T::n_chan; k++){
+				#pragma hls pipeline II=1
+				tmpt2 = data.read();
+				memory2[k] = tmpt2;
+			}
+			for(int k=0; k<CONFIG_T::n_chan; k++){
+				#pragma HLS UNROLL
+				pool[0] = memory1[2*j][k];
+				pool[1] = memory1[2*j+1][k];
+				pool[2] = memory2[k];
+				tmpt3 = data.read();
+				pool[3] = tmpt3;
+				
+				res_T max = pool[0];
+				for(int m=1; m<4; m++){
+					#pragma HLS UNROLL
+					if(pool[m] > max)max = pool[m];
+				}
+				res.write(max);
+		    }
+		  }
+		  for(int k=0; k<CONFIG_T::n_chan; k++){
+			#pragma hls pipeline II=1
+			if(CONFIG_T::in_width > cal_width){
+				tmpt4 = data.read();
+			}
+		  }
+      }
+	  for(int j=0; j<CONFIG_T::in_width; j++){
+	    for(int k=0; k<CONFIG_T::n_chan; k++){
+			#pragma hls pipeline II=1
+			if(CONFIG_T::in_height > cal_height){
+				tmpt5 = data.read();
+			}
+		}
+	  }
+  }
+
+template<class data_T, class res_T, typename CONFIG_T>
+  void pooling_me2(
+		    hls::stream<data_T> data[CONFIG_T::n_chan],
+		    hls::stream<res_T>  res[CONFIG_T::n_chan]) { 
+			
+      //decide the restriction
+      int cal_height,cal_width;
+      if(CONFIG_T::in_height%2 == 0)cal_height = CONFIG_T::in_height;
+      else cal_height = CONFIG_T::in_height-1;
+      if(CONFIG_T::in_width%2 == 0)cal_width = CONFIG_T::in_width;
+      else cal_width = CONFIG_T::in_width-1;
+	  
+	  //start to calculate
+      data_T memory1[CONFIG_T::in_width][CONFIG_T::n_filt];
+	  #pragma HLS ARRAY_PARTITION variable=memory1 cyclic factor=2 dim=1
+      data_T memory2[CONFIG_T::n_filt];
+      data_T tmpt,tmpt2,tmpt3,tmpt4,tmpt5;
+	  data_T pool[4];
+	  #pragma HLS ARRAY_PARTITION variable=pool complete
+	  
+	  int cal_height2 = cal_height/2;
+      for(int i=0; i<cal_height2; i++){
+		  //read data
+		  for(int j=0; j<cal_width; j++){
+            for(int k=0; k<CONFIG_T::n_chan; k++){
+				#pragma HLS UNROLL 
+				tmpt = data[k].read();
+				memory1[j][k] = tmpt;
+			}
+		  }
+		  for(int k=0; k<CONFIG_T::n_chan; k++){
+				#pragma HLS UNROLL 
+				if(CONFIG_T::in_width > cal_width){
+					tmpt = data[k].read();
+				}
+		  }
+		  //decide which is the biggest
+		  int cal_width2 = cal_width/2;
+		  for(int j=0; j<cal_width2; j++){
+			for(int k=0; k<CONFIG_T::n_chan; k++){
+				#pragma HLS UNROLL
+				tmpt2 = data[k].read();
+				memory2[k] = tmpt2;
+			}
+			for(int k=0; k<CONFIG_T::n_chan; k++){
+				#pragma HLS UNROLL
+				pool[0] = memory1[2*j][k];
+				pool[1] = memory1[2*j+1][k];
+				pool[2] = memory2[k];
+				tmpt3 = data[k].read();
+				pool[3] = tmpt3;
+				
+				res_T max = pool[0];
+				for(int m=1; m<4; m++){
+					#pragma HLS UNROLL
+					if(pool[m] > max)max = pool[m];
+				}
+				res[k].write(max);
+		    }
+		  }
+		  for(int k=0; k<CONFIG_T::n_chan; k++){
+			#pragma HLS UNROLL
+			if(CONFIG_T::in_width > cal_width){
+				tmpt4 = data[k].read();
+			}
+		  }
+      }
+	  for(int j=0; j<CONFIG_T::in_width; j++){
+	    for(int k=0; k<CONFIG_T::n_chan; k++){
+			#pragma HLS UNROLL
+			if(CONFIG_T::in_height > cal_height){
+				tmpt5 = data[k].read();
+			}
+		}
+	  }
+  }
 ////////////////////////////////////////////////////Dylan 2022
 
 template<class data_T, class res_T, typename CONFIG_T>

@@ -448,6 +448,32 @@ void leaky_relu_me(hls::stream<data_T> &data,data_T alpha, hls::stream<res_T> &r
     }
 }
 
+template<class data_T, class res_T, typename CONFIG_T>
+void leaky_relu_me2(hls::stream<data_T> data[CONFIG_T::n_chan], data_T alpha, hls::stream<res_T> res[CONFIG_T::n_chan]) {
+    LeakyReLUActLoop: for (int i = 0; i < CONFIG_T::n_in / CONFIG_T::n_chan; i++) {
+        #pragma HLS PIPELINE
+        
+        data_T in_data[CONFIG_T::n_chan];
+        #pragma HLS ARRAY_RESHAPE variable=in_data complete
+        
+        res_T out_data[CONFIG_T::n_chan];
+        #pragma HLS ARRAY_RESHAPE variable=out_data complete
+        
+        for (int j = 0; j < CONFIG_T::n_chan; j++) {
+            #pragma HLS UNROLL
+            in_data[j] = data[j].read();
+        }
+        
+        LeakyReLUPackLoop: for (int j = 0; j < CONFIG_T::n_chan; j++) {
+            #pragma HLS UNROLL
+            if (in_data[j] > 0) out_data[j] = in_data[j];
+            else out_data[j] = alpha * in_data[j];
+            res[j].write(out_data[j]);
+        }
+    }
+}
+
+
 
 template<class data_T, class res_T, typename CONFIG_T>
 void leaky_relu(hls::stream<data_T> &data, typename data_T::value_type alpha, hls::stream<res_T> &res) {

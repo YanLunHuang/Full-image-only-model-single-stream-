@@ -27,6 +27,16 @@ void fill_zero_me(hls::stream<res_T> &res) {
     }
 }
 
+template<class res_T, typename CONFIG_T>
+void fill_zero_me2(hls::stream<res_T> res[CONFIG_T::n_chan]) {
+    #pragma HLS INLINE
+    res_T res_part = 0;;
+    for (int c = 0; c < CONFIG_T::n_chan; c++) {
+        #pragma HLS UNROLL
+        res[c].write(res_part);
+    }
+}
+
 template<class data_T, class res_T, typename CONFIG_T>
 void fill_data(hls::stream<data_T> &data, hls::stream<res_T> &res) {
     #pragma HLS INLINE
@@ -51,6 +61,24 @@ void fill_data_me(hls::stream<data_T> &data, hls::stream<res_T> &res) {
 		res.write(res_part);
     }
 
+}
+
+template<class data_T, class res_T, typename CONFIG_T>
+void fill_data_me2(hls::stream<data_T> data[CONFIG_T::n_chan], hls::stream<res_T> res[CONFIG_T::n_chan]) {
+    #pragma HLS INLINE
+    data_T data_part[CONFIG_T::n_chan];
+    #pragma HLS ARRAY_PARTITION variable=data_part complete
+    
+    for (int c = 0; c < CONFIG_T::n_chan; c++) {
+        #pragma HLS UNROLL
+        data_part[c] = data[c].read();
+    }
+    
+    for (int c = 0; c < CONFIG_T::n_chan; c++) {
+        #pragma HLS UNROLL
+        res_T res_part = data_part[c];
+        res[c].write(res_part);
+    }
 }
 
 template<class data_T, class res_T, typename CONFIG_T>
@@ -133,7 +161,36 @@ void zeropad2d_cl_me(
     }
 }
 
+template<class data_T, class res_T, typename CONFIG_T>
+void zeropad2d_cl_me2(
+    hls::stream<data_T> data[CONFIG_T::n_chan],
+    hls::stream<res_T>  res[CONFIG_T::n_chan]
+) {
 
+    PadTop: for (int i = 0; i < CONFIG_T::pad_top; i++) {
+        PadTopWidth: for (int j = 0; j < CONFIG_T::out_width; j++) {
+            fill_zero_me2<res_T, CONFIG_T>(res);
+        }
+    }
+
+    PadMain: for (int i = 0; i < CONFIG_T::in_height; i++) {
+        PadLeft: for (int j = 0; j < CONFIG_T::pad_left; j++) {
+            fill_zero_me2<res_T, CONFIG_T>(res);
+        }
+        CopyMain: for (int j = 0; j < CONFIG_T::in_width; j++) {
+            fill_data_me2<data_T, res_T, CONFIG_T>(data, res);
+        }
+        PadRight: for (int j = 0; j < CONFIG_T::pad_right; j++) {
+            fill_zero_me2<res_T, CONFIG_T>(res);
+        }
+    }
+
+    PadBottom: for (int i = 0; i < CONFIG_T::pad_bottom; i++) {
+        PadBottomWidth: for (int j = 0; j < CONFIG_T::out_width; j++) {
+            fill_zero_me2<res_T, CONFIG_T>(res);
+        }
+    }
+}
 
 
 }
