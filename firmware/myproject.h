@@ -28,7 +28,7 @@
 
 // Prototype of top level function for C-synthesis
 void myproject(
-    hls::stream<input_t> &em_barrel,
+    hls::stream<input_t> em_barrel[N_INPUT_3_1],
     hls::stream<result_t> &layer55_out,
     unsigned short &const_size_in_1,
     unsigned short &const_size_out_1,

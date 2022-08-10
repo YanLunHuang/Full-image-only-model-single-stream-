@@ -312,6 +312,21 @@ void copy_data_me(std::vector<src_T> src, hls::stream<dst_T> &dst) {
     }
 }
 
+template<class src_T, class dst_T, size_t OFFSET, size_t SIZE, size_t SIZE2>
+void copy_data_me2(std::vector<src_T> src, hls::stream<dst_T> dst[SIZE2]) {
+    typename std::vector<src_T>::const_iterator in_begin = src.cbegin() + OFFSET;
+    typename std::vector<src_T>::const_iterator in_end = in_begin + SIZE;
+
+    dst_T dst_pack;
+	int count = 0;
+    for (typename std::vector<src_T>::const_iterator i = in_begin; i != in_end; ++i) {
+        dst_pack = dst_T(*i);
+        dst[count].write(dst_pack);
+		if(count<3)count++;
+		else count=0;
+    }
+}
+
 
 template<class src_T, class dst_T, size_t OFFSET, size_t SIZE>
 void copy_data_axi(std::vector<src_T> src, dst_T dst[SIZE]) {

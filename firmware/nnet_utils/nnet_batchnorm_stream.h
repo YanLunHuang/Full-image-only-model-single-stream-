@@ -45,13 +45,12 @@ void normalize_me(
     constexpr unsigned ii = CONFIG_T::n_in / multiplier_limit;
     CONFIG_T::template product<data_T, typename CONFIG_T::scale_t,res_T>::limit(multiplier_limit);
 
+    data_T in_data;
+    res_T out_data;
     BatchNormLoop: for (int i = 0; i < CONFIG_T::n_in; i++) {
         #pragma HLS PIPELINE II=ii
 
-        data_T in_data = data.read();
-        res_T out_data;
-        #pragma HLS DATA_PACK variable=out_data
-
+        in_data = data.read();
 
            // #pragma HLS UNROLL
             int norm_index;
@@ -64,6 +63,54 @@ void normalize_me(
 	    //out_data = CONFIG_T::template product<data_T, typename CONFIG_T::scale_t,res_T>::product(in_data, scale[norm_index]) + bias[norm_index];
 
 			res.write(out_data);
+    }
+}
+
+template<class data_T, class res_T, typename CONFIG_T>
+void normalize_me2(
+    hls::stream<data_T> data[CONFIG_T::n_filt],
+    hls::stream<res_T>  res[CONFIG_T::n_filt],
+    typename CONFIG_T::scale_t scale[CONFIG_T::n_in],
+    typename CONFIG_T::bias_t  bias[CONFIG_T::n_in]
+) {
+    #pragma HLS ARRAY_PARTITION variable=scale complete
+    #pragma HLS ARRAY_PARTITION variable=bias complete
+
+    constexpr unsigned multiplier_limit = DIV_ROUNDUP(CONFIG_T::n_in, CONFIG_T::reuse_factor);
+    constexpr unsigned ii = CONFIG_T::n_in / multiplier_limit;
+    CONFIG_T::template product<data_T, typename CONFIG_T::scale_t, res_T>::limit(multiplier_limit);
+
+    data_T in_data[CONFIG_T::n_filt];
+    #pragma HLS ARRAY_PARTITION variable=in_data complete
+    
+    res_T out_data[CONFIG_T::n_filt];
+    #pragma HLS ARRAY_PARTITION variable=out_data complete
+    
+    BatchNormLoop: for (int i = 0; i < CONFIG_T::n_in / CONFIG_T::n_filt; i++) {
+        #pragma HLS PIPELINE II=ii
+        
+        for(int j=0; j < CONFIG_T::n_filt; j++){
+            #pragma HLS UNROLL
+            in_data[j] = data[j].read();
+        }
+        
+        BatchNormpack: for (int j = 0; j < CONFIG_T::n_filt; j++) {
+            #pragma HLS UNROLL
+            int norm_index;
+            if (CONFIG_T::n_filt==-1) {
+                norm_index = i * CONFIG_T::n_filt + j;  //?????
+            } else {
+                norm_index = j % CONFIG_T::n_filt;
+            }
+            
+            out_data[j] = product_dense<data_T, typename CONFIG_T::scale_t,res_T>(in_data[j], scale[norm_index]) + bias[norm_index];
+        }
+        
+        for(int j=0; j < CONFIG_T::n_filt; j++){
+            #pragma HLS UNROLL
+            res_T tmpt = out_data[j];
+            res[j].write(tmpt);
+        }
     }
 }
 
