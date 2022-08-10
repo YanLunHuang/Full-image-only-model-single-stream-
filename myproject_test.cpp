@@ -38,6 +38,37 @@ namespace nnet {
     size_t trace_type_size = sizeof(double);
 }
 
+
+template<class T, size_t SIZE>
+void load_weights_from_txt(T *w, const char* fname) {
+
+    std::string full_path = std::string(WEIGHTS_DIR) + "/" + std::string(fname);
+    std::ifstream infile(full_path.c_str(), std::ios::binary);
+
+    if (infile.fail()) {
+        std::cerr << "ERROR: file " << std::string(fname) << " does not exist" << std::endl;
+        exit(1);
+    }
+
+    std::string line;
+    if (std::getline(infile, line)) {
+        std::istringstream iss(line);
+        std::string token;
+
+        size_t i = 0;
+        while(std::getline(iss, token, ',')) {
+            std::istringstream(token) >> w[i];
+            i++;
+        }
+
+        if (SIZE != i) {
+            std::cerr << "ERROR: Expected " << SIZE << " values";
+            std::cerr << " but read only " << i << " values" << std::endl;
+        }
+    }
+}
+
+
 int main(int argc, char **argv)
 {
   //load input data from text file
@@ -66,7 +97,16 @@ int main(int argc, char **argv)
   model_default_t w45[589824];
   model_default_t w49[65536];
 
-
+  load_weights_from_txt<model_default_t, 9216>(w13, "w13.txt");
+  load_weights_from_txt<model_default_t, 18432>(w18, "w18.txt");
+  load_weights_from_txt<model_default_t, 36864>(w22, "w22.txt");
+  load_weights_from_txt<model_default_t, 73728>(w27, "w27.txt");
+  load_weights_from_txt<model_default_t, 147456>(w31, "w31.txt");
+  load_weights_from_txt<model_default_t, 294912>(w36, "w36.txt");
+  load_weights_from_txt<model_default_t, 589824>(w40, "w40.txt");
+  load_weights_from_txt<model_default_t, 589824>(w45, "w45.txt");
+  load_weights_from_txt<model_default_t, 65536>(w49, "w49.txt");
+  
   if (fin.is_open() && fpr.is_open()) {
     while ( std::getline(fin,iline) && std::getline (fpr,pline) ) {
       if (e % CHECKPOINT == 0) std::cout << "Processing input " << e << std::endl;
