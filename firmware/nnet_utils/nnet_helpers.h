@@ -343,8 +343,8 @@ void print_result_me(hls::stream<res_T> &result, std::ostream &out, bool keep = 
         res_T res_pack = result.read();
         out << res_pack << " ";
         if (keep) result.write(res_pack);
-		if(i == 255)out << std::endl;
     }
+    out << std::endl;
 }
 
 template<class res_T, size_t SIZE>
