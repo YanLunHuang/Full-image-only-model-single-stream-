@@ -220,7 +220,7 @@ void myproject(
 
     hls::stream<layer40_t> layer40_out("layer40_out");
     #pragma HLS STREAM variable=layer40_out depth=9
-    nnet::conv_2d_large_cl_nopad_pad_me2<layer64_t, layer40_t, config40>(layer64_out, layer40_out, w40, b40); // conv2d_8
+    nnet::conv_2d_cl_me<layer64_t, layer40_t, config40>(layer64_out, layer40_out, w40, b40); // conv2d_8
 
     hls::stream<layer43_t> layer43_out("layer43_out");
     #pragma HLS STREAM variable=layer43_out depth=9
