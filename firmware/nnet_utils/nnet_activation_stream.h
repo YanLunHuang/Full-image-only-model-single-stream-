@@ -456,8 +456,7 @@ void leaky_relu_me2(hls::stream<data_T> data[CONFIG_T::n_chan], data_T alpha, hl
         data_T in_data[CONFIG_T::n_chan];
         #pragma HLS ARRAY_RESHAPE variable=in_data complete
         
-        res_T out_data[CONFIG_T::n_chan];
-        #pragma HLS ARRAY_RESHAPE variable=out_data complete
+        res_T out_data;
         
         for (int j = 0; j < CONFIG_T::n_chan; j++) {
             #pragma HLS UNROLL
@@ -466,12 +465,13 @@ void leaky_relu_me2(hls::stream<data_T> data[CONFIG_T::n_chan], data_T alpha, hl
         
         LeakyReLUPackLoop: for (int j = 0; j < CONFIG_T::n_chan; j++) {
             #pragma HLS UNROLL
-            if (in_data[j] > 0) out_data[j] = in_data[j];
-            else out_data[j] = alpha * in_data[j];
-            res[j].write(out_data[j]);
+            if (in_data[j] > 0) out_data = in_data[j];
+            else out_data = alpha * in_data[j];
+            res[j].write(out_data);
         }
     }
 }
+
 
 
 

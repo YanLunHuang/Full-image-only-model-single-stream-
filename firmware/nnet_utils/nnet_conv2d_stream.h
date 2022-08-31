@@ -140,7 +140,7 @@ void conv_2d_large_cl_nopad_pad_me(
     #pragma HLS ARRAY_RESHAPE variable=tmpdata complete
 
     static data_T layer_in[CONFIG_T::filt_height*CONFIG_T::filt_width*CONFIG_T::n_chan];
-    //#pragma HLS ARRAY_RESHAPE variable=layer_in complete
+    #pragma HLS ARRAY_RESHAPE variable=layer_in complete
 
     //typename res_T::value_type layer_reluout[CONFIG_T::n_filt];
     //#pragma HLS ARRAY_RESHAPE variable=layer_reluout complete dim=0
@@ -182,7 +182,6 @@ void conv_2d_large_cl_nopad_pad_me(
 			} else {
 				dense_large<data_T,res_T, typename CONFIG_T::mult_config>(layer_in, layer_out, weights, biases);
 			}
-
 			// Pack output
 			CastLoop: for (unsigned i_ic = 0; i_ic < CONFIG_T::n_filt; i_ic++) {
 				#pragma HLS UNROLL
@@ -243,13 +242,16 @@ void conv_2d_large_cl_nopad_pad_me2(
     #pragma HLS ARRAY_RESHAPE variable=tmpdata complete
 
     static data_T layer_in[CONFIG_T::filt_height*CONFIG_T::filt_width*CONFIG_T::n_chan];
-    //#pragma HLS ARRAY_RESHAPE variable=layer_in complete
+    #pragma HLS ARRAY_RESHAPE variable=layer_in complete
 
     //typename res_T::value_type layer_reluout[CONFIG_T::n_filt];
     //#pragma HLS ARRAY_RESHAPE variable=layer_reluout complete dim=0
 
     res_T layer_out[CONFIG_T::n_filt];
     #pragma HLS ARRAY_RESHAPE variable=layer_out complete dim=0
+
+    res_T res_pack[CONFIG_T::n_filt];
+    #pragma HLS ARRAY_RESHAPE variable=res_pack complete dim=0
     
 	// Thresholds
     const static int lShiftX = CONFIG_T::filt_width - 1;
@@ -284,8 +286,8 @@ void conv_2d_large_cl_nopad_pad_me2(
 			// Pack output
 			CastLoop: for (unsigned i_ic = 0; i_ic < CONFIG_T::n_filt; i_ic++) {
 				#pragma HLS UNROLL
-				res_T res_pack = layer_out[i_ic];
-				res[i_ic].write(res_pack);
+				res_pack[i_ic] = layer_out[i_ic];
+				res[i_ic].write(res_pack[i_ic]);
 			}
 
 			// Write output to stream when output ready
@@ -323,7 +325,6 @@ void conv_2d_large_cl_nopad_pad_me2(
 	}
 }
 
-
 template<class data_T, class res_T, typename CONFIG_T>
 void conv_2d_large_cl_nopad_pad_me3(
          hls::stream<data_T> data[CONFIG_T::n_chan],
@@ -342,7 +343,7 @@ void conv_2d_large_cl_nopad_pad_me3(
     #pragma HLS ARRAY_RESHAPE variable=tmpdata complete
 
     static data_T layer_in[CONFIG_T::filt_height*CONFIG_T::filt_width*CONFIG_T::n_chan];
-    //#pragma HLS ARRAY_RESHAPE variable=layer_in complete
+    #pragma HLS ARRAY_RESHAPE variable=layer_in complete
 
     //typename res_T::value_type layer_reluout[CONFIG_T::n_filt];
     //#pragma HLS ARRAY_RESHAPE variable=layer_reluout complete dim=0

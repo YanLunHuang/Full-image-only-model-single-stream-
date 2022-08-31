@@ -648,36 +648,48 @@ void dense_large_stream(
 }
 
 template<class data_T, class res_T, typename CONFIG_T>
-void dense_large_stream_me(
+void dense_ss(
       hls::stream<data_T> &data,
       hls::stream<res_T>  &res,
       typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out],
       typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
-
       
-      static data_T tmpdata[CONFIG_T::n_in];
-      #pragma HLS ARRAY_PARTITION variable=tmpdata complete
+      const int block_factor = DIV_ROUNDUP(CONFIG_T::n_out, CONFIG_T::reuse_factor);
+      #pragma HLS ARRAY_RESHAPE variable=weights block factor=CONFIG_T::n_out
+      #pragma HLS ARRAY_PARTITION variable=biases complete
       
-      DataPrepare: for(int i_in = 0; i_in < CONFIG_T::n_in; i_in++) {
-        if (CONFIG_T::n_in > 1) {
-            #pragma HLS PIPELINE
-        }
+      typename CONFIG_T::accum_t acc[block_factor][CONFIG_T::reuse_factor];
+      #pragma HLS ARRAY_PARTITION variable=acc complete dim=0
+      
+      InitAccum:
+      for (int iacc = 0; iacc < CONFIG_T::reuse_factor; iacc++) {
+          #pragma HLS UNROLL
+          for (int iacc2 = 0; iacc2 < block_factor; iacc2++) {
             #pragma HLS UNROLL
-            tmpdata[i_in] = data.read();
-    }
-     
-       res_T tmpres[CONFIG_T::n_out];
-       #pragma HLS ARRAY_PARTITION variable=tmpdres complete
-	     dense_large<data_T,res_T, CONFIG_T>(tmpdata,tmpres,weights,biases);
-
-	 ResWrite: for(unsigned i_out = 0; i_out < CONFIG_T::n_out; i_out++) {
-        if (CONFIG_T::n_out > 1) {
-            #pragma HLS PIPELINE
-        }
-        #pragma HLS UNROLL
-        res.write(tmpres[i_out]);
-    }
-
+            acc[iacc2][iacc] = (typename CONFIG_T::accum_t) biases[iacc*block_factor+iacc2];
+          }
+      }
+    
+     for(int i_in = 0; i_in < CONFIG_T::n_in; i_in++) {
+        #pragma HLS PIPELINE II=CONFIG_T::reuse_factor
+        data_T tmpdata = data.read();
+        for (int iacc = 0; iacc < CONFIG_T::reuse_factor; iacc++) {
+          #pragma HLS UNROLL
+          for (int iacc2 = 0; iacc2 < block_factor; iacc2++) {
+            #pragma HLS UNROLL
+            unsigned w_index  =  i_in + (CONFIG_T::n_in*(iacc*block_factor+iacc2)); 
+            acc[iacc2][iacc] += product_dense<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::accum_t>(tmpdata, weights[w_index]);
+          }
+      }
+     }
+     ResWrite:for (int iacc = 0; iacc < CONFIG_T::reuse_factor; iacc++) {
+          #pragma HLS UNROLL
+          for (int iacc2 = 0; iacc2 < block_factor; iacc2++) {
+            #pragma HLS UNROLL
+            res_T tmpres = (res_T)acc[iacc2][iacc];
+            res.write(tmpres);
+          }
+     }
 }
 
 
