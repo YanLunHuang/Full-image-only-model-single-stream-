@@ -649,8 +649,8 @@ void dense_large_stream(
 
 template<class data_T, class res_T, typename CONFIG_T>
 void dense_ss(
-      hls::stream<data_T> &data,
-      hls::stream<res_T>  &res,
+      hls::stream<data_T> data[1],
+      hls::stream<res_T>  res[1],
       typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out],
       typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
       
@@ -672,7 +672,7 @@ void dense_ss(
     
      for(int i_in = 0; i_in < CONFIG_T::n_in; i_in++) {
         #pragma HLS PIPELINE II=CONFIG_T::reuse_factor
-        data_T tmpdata = data.read();
+        data_T tmpdata = data[0].read();
         for (int iacc = 0; iacc < CONFIG_T::reuse_factor; iacc++) {
           #pragma HLS UNROLL
           for (int iacc2 = 0; iacc2 < block_factor; iacc2++) {
@@ -687,7 +687,7 @@ void dense_ss(
           for (int iacc2 = 0; iacc2 < block_factor; iacc2++) {
             #pragma HLS UNROLL
             res_T tmpres = (res_T)acc[iacc2][iacc];
-            res.write(tmpres);
+            res[0].write(tmpres);
           }
      }
 }

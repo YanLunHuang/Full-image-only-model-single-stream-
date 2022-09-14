@@ -29,6 +29,7 @@
 struct config2 : nnet::resize_config {
     static const unsigned height = 56;
     static const unsigned width = 11;
+    static const unsigned data_transfer = 4;
     static const unsigned n_chan = 4;
     static const unsigned new_height = 56;
     static const unsigned new_width = 55;
@@ -37,6 +38,7 @@ struct config2 : nnet::resize_config {
 // batch_normalization
 struct config3 : nnet::batchnorm_config {
     static const unsigned n_in = OUT_HEIGHT_2*OUT_WIDTH_2*N_CHAN_2;
+    static const unsigned data_transfer = 4;
     static const unsigned n_filt = 4;
     static const unsigned io_type = nnet::io_stream;
     static const unsigned reuse_factor = 2000;
@@ -51,6 +53,7 @@ struct config3 : nnet::batchnorm_config {
 struct config56 : nnet::padding2d_config {
     static const unsigned in_height = OUT_HEIGHT_2;
     static const unsigned in_width = OUT_WIDTH_2;
+    static const unsigned data_transfer = N_CHAN_2;
     static const unsigned n_chan = N_CHAN_2;
     static const unsigned out_height = OUT_HEIGHT_56;
     static const unsigned out_width = OUT_WIDTH_56;
@@ -80,6 +83,8 @@ struct config4 : nnet::conv2d_config {
     static const unsigned pad_right = 0;
     static const unsigned in_height = OUT_HEIGHT_56;
     static const unsigned in_width = OUT_WIDTH_56;
+    static const unsigned data_transfer_in = N_CHAN_56;
+    static const unsigned data_transfer_out = N_FILT_4;
     static const unsigned n_chan = N_CHAN_56;
     static const unsigned filt_height = 5;
     static const unsigned filt_width = 5;
@@ -107,6 +112,7 @@ const ap_uint<config4::filt_height * config4::filt_width> config4::pixels[] = {1
 // leaky_re_lu
 struct LeakyReLU_config7 : nnet::activ_config {
     static const unsigned n_in = OUT_HEIGHT_4*OUT_WIDTH_4*N_FILT_4;
+    static const unsigned data_transfer = N_FILT_4;
     static const unsigned n_chan = N_FILT_4;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_stream;
@@ -126,6 +132,7 @@ struct config8 : nnet::pooling2d_config {
 
     static const unsigned filt_height = 2;
     static const unsigned filt_width = 2;
+    static const unsigned data_transfer = N_FILT_8;
     static const unsigned n_chan = N_FILT_8;
 
     static const unsigned out_height = OUT_HEIGHT_8;
@@ -144,6 +151,7 @@ struct config8 : nnet::pooling2d_config {
 struct config57 : nnet::padding2d_config {
     static const unsigned in_height = OUT_HEIGHT_8;
     static const unsigned in_width = OUT_WIDTH_8;
+    static const unsigned data_transfer = N_FILT_8;
     static const unsigned n_chan = N_FILT_8;
     static const unsigned out_height = OUT_HEIGHT_57;
     static const unsigned out_width = OUT_WIDTH_57;
@@ -173,6 +181,8 @@ struct config9 : nnet::conv2d_config {
     static const unsigned pad_right = 0;
     static const unsigned in_height = OUT_HEIGHT_57;
     static const unsigned in_width = OUT_WIDTH_57;
+    static const unsigned data_transfer_in = N_CHAN_57;
+    static const unsigned data_transfer_out = N_FILT_9;
     static const unsigned n_chan = N_CHAN_57;
     static const unsigned filt_height = 3;
     static const unsigned filt_width = 3;
@@ -200,6 +210,7 @@ const ap_uint<config9::filt_height * config9::filt_width> config9::pixels[] = {1
 // leaky_re_lu_1
 struct LeakyReLU_config12 : nnet::activ_config {
     static const unsigned n_in = OUT_HEIGHT_9*OUT_WIDTH_9*N_FILT_9;
+    static const unsigned data_transfer = N_FILT_9;
     static const unsigned n_chan = N_FILT_9;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_stream;
@@ -211,6 +222,7 @@ struct LeakyReLU_config12 : nnet::activ_config {
 struct config58 : nnet::padding2d_config {
     static const unsigned in_height = OUT_HEIGHT_9;
     static const unsigned in_width = OUT_WIDTH_9;
+    static const unsigned data_transfer = N_FILT_9;
     static const unsigned n_chan = N_FILT_9;
     static const unsigned out_height = OUT_HEIGHT_58;
     static const unsigned out_width = OUT_WIDTH_58;
@@ -240,6 +252,8 @@ struct config13 : nnet::conv2d_config {
     static const unsigned pad_right = 0;
     static const unsigned in_height = OUT_HEIGHT_58;
     static const unsigned in_width = OUT_WIDTH_58;
+    static const unsigned data_transfer_in = N_CHAN_58;
+    static const unsigned data_transfer_out = N_FILT_13;
     static const unsigned n_chan = N_CHAN_58;
     static const unsigned filt_height = 3;
     static const unsigned filt_width = 3;
@@ -267,6 +281,7 @@ const ap_uint<config13::filt_height * config13::filt_width> config13::pixels[] =
 // leaky_re_lu_2
 struct LeakyReLU_config16 : nnet::activ_config {
     static const unsigned n_in = OUT_HEIGHT_13*OUT_WIDTH_13*N_FILT_13;
+    static const unsigned data_transfer = N_FILT_13;
     static const unsigned n_chan = N_FILT_13;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_stream;
@@ -286,6 +301,7 @@ struct config17 : nnet::pooling2d_config {
 
     static const unsigned filt_height = 2;
     static const unsigned filt_width = 2;
+    static const unsigned data_transfer = N_FILT_17;
     static const unsigned n_chan = N_FILT_17;
 
     static const unsigned out_height = OUT_HEIGHT_17;
@@ -304,6 +320,7 @@ struct config17 : nnet::pooling2d_config {
 struct config59 : nnet::padding2d_config {
     static const unsigned in_height = OUT_HEIGHT_17;
     static const unsigned in_width = OUT_WIDTH_17;
+    static const unsigned data_transfer = N_FILT_17;
     static const unsigned n_chan = N_FILT_17;
     static const unsigned out_height = OUT_HEIGHT_59;
     static const unsigned out_width = OUT_WIDTH_59;
@@ -333,6 +350,8 @@ struct config18 : nnet::conv2d_config {
     static const unsigned pad_right = 0;
     static const unsigned in_height = OUT_HEIGHT_59;
     static const unsigned in_width = OUT_WIDTH_59;
+    static const unsigned data_transfer_in = N_CHAN_59;
+    static const unsigned data_transfer_out = 1;
     static const unsigned n_chan = N_CHAN_59;
     static const unsigned filt_height = 3;
     static const unsigned filt_width = 3;
@@ -360,6 +379,7 @@ const ap_uint<config18::filt_height * config18::filt_width> config18::pixels[] =
 // leaky_re_lu_3
 struct LeakyReLU_config21 : nnet::activ_config {
     static const unsigned n_in = OUT_HEIGHT_18*OUT_WIDTH_18*N_FILT_18;
+    static const unsigned data_transfer = 1;
     static const unsigned n_chan = N_FILT_18;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_stream;
@@ -371,6 +391,7 @@ struct LeakyReLU_config21 : nnet::activ_config {
 struct config60 : nnet::padding2d_config {
     static const unsigned in_height = OUT_HEIGHT_18;
     static const unsigned in_width = OUT_WIDTH_18;
+    static const unsigned data_transfer = 1;
     static const unsigned n_chan = N_FILT_18;
     static const unsigned out_height = OUT_HEIGHT_60;
     static const unsigned out_width = OUT_WIDTH_60;
@@ -400,6 +421,8 @@ struct config22 : nnet::conv2d_config {
     static const unsigned pad_right = 0;
     static const unsigned in_height = OUT_HEIGHT_60;
     static const unsigned in_width = OUT_WIDTH_60;
+    static const unsigned data_transfer_in = 1;
+    static const unsigned data_transfer_out = 1;
     static const unsigned n_chan = N_CHAN_60;
     static const unsigned filt_height = 3;
     static const unsigned filt_width = 3;
@@ -427,6 +450,8 @@ const ap_uint<config22::filt_height * config22::filt_width> config22::pixels[] =
 // leaky_re_lu_4
 struct LeakyReLU_config25 : nnet::activ_config {
     static const unsigned n_in = OUT_HEIGHT_22*OUT_WIDTH_22*N_FILT_22;
+    static const unsigned data_transfer = 1;
+    static const unsigned n_chan = N_FILT_22;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_stream;
     static const unsigned reuse_factor = 2000;
@@ -445,6 +470,7 @@ struct config26 : nnet::pooling2d_config {
 
     static const unsigned filt_height = 2;
     static const unsigned filt_width = 2;
+    static const unsigned data_transfer = 1;
     static const unsigned n_chan = N_FILT_26;
 
     static const unsigned out_height = OUT_HEIGHT_26;
@@ -463,6 +489,7 @@ struct config26 : nnet::pooling2d_config {
 struct config61 : nnet::padding2d_config {
     static const unsigned in_height = OUT_HEIGHT_26;
     static const unsigned in_width = OUT_WIDTH_26;
+    static const unsigned data_transfer = 1;
     static const unsigned n_chan = N_FILT_26;
     static const unsigned out_height = OUT_HEIGHT_61;
     static const unsigned out_width = OUT_WIDTH_61;
@@ -492,6 +519,8 @@ struct config27 : nnet::conv2d_config {
     static const unsigned pad_right = 0;
     static const unsigned in_height = OUT_HEIGHT_61;
     static const unsigned in_width = OUT_WIDTH_61;
+    static const unsigned data_transfer_in = 1;
+    static const unsigned data_transfer_out = 1;
     static const unsigned n_chan = N_CHAN_61;
     static const unsigned filt_height = 3;
     static const unsigned filt_width = 3;
@@ -519,6 +548,8 @@ const ap_uint<config27::filt_height * config27::filt_width> config27::pixels[] =
 // leaky_re_lu_5
 struct LeakyReLU_config30 : nnet::activ_config {
     static const unsigned n_in = OUT_HEIGHT_27*OUT_WIDTH_27*N_FILT_27;
+    static const unsigned data_transfer = 1;
+    static const unsigned n_chan = N_FILT_27;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_stream;
     static const unsigned reuse_factor = 2000;
@@ -529,6 +560,7 @@ struct LeakyReLU_config30 : nnet::activ_config {
 struct config62 : nnet::padding2d_config {
     static const unsigned in_height = OUT_HEIGHT_27;
     static const unsigned in_width = OUT_WIDTH_27;
+    static const unsigned data_transfer = 1;
     static const unsigned n_chan = N_FILT_27;
     static const unsigned out_height = OUT_HEIGHT_62;
     static const unsigned out_width = OUT_WIDTH_62;
@@ -558,6 +590,8 @@ struct config31 : nnet::conv2d_config {
     static const unsigned pad_right = 0;
     static const unsigned in_height = OUT_HEIGHT_62;
     static const unsigned in_width = OUT_WIDTH_62;
+    static const unsigned data_transfer_in = 1;
+    static const unsigned data_transfer_out = 1;
     static const unsigned n_chan = N_CHAN_62;
     static const unsigned filt_height = 3;
     static const unsigned filt_width = 3;
@@ -585,6 +619,8 @@ const ap_uint<config31::filt_height * config31::filt_width> config31::pixels[] =
 // leaky_re_lu_6
 struct LeakyReLU_config34 : nnet::activ_config {
     static const unsigned n_in = OUT_HEIGHT_31*OUT_WIDTH_31*N_FILT_31;
+    static const unsigned data_transfer = 1;
+    static const unsigned n_chan = N_FILT_31;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_stream;
     static const unsigned reuse_factor = 2000;
@@ -603,6 +639,7 @@ struct config35 : nnet::pooling2d_config {
 
     static const unsigned filt_height = 2;
     static const unsigned filt_width = 2;
+    static const unsigned data_transfer = 1;
     static const unsigned n_chan = N_FILT_35;
 
     static const unsigned out_height = OUT_HEIGHT_35;
@@ -621,6 +658,7 @@ struct config35 : nnet::pooling2d_config {
 struct config63 : nnet::padding2d_config {
     static const unsigned in_height = OUT_HEIGHT_35;
     static const unsigned in_width = OUT_WIDTH_35;
+    static const unsigned data_transfer = 1;
     static const unsigned n_chan = N_FILT_35;
     static const unsigned out_height = OUT_HEIGHT_63;
     static const unsigned out_width = OUT_WIDTH_63;
@@ -650,6 +688,8 @@ struct config36 : nnet::conv2d_config {
     static const unsigned pad_right = 0;
     static const unsigned in_height = OUT_HEIGHT_63;
     static const unsigned in_width = OUT_WIDTH_63;
+    static const unsigned data_transfer_in = 1;
+    static const unsigned data_transfer_out = 1;
     static const unsigned n_chan = N_CHAN_63;
     static const unsigned filt_height = 3;
     static const unsigned filt_width = 3;
@@ -677,6 +717,8 @@ const ap_uint<config36::filt_height * config36::filt_width> config36::pixels[] =
 // leaky_re_lu_7
 struct LeakyReLU_config39 : nnet::activ_config {
     static const unsigned n_in = OUT_HEIGHT_36*OUT_WIDTH_36*N_FILT_36;
+    static const unsigned data_transfer = 1;
+    static const unsigned n_chan = N_FILT_36;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_stream;
     static const unsigned reuse_factor = 2000;
@@ -687,6 +729,7 @@ struct LeakyReLU_config39 : nnet::activ_config {
 struct config64 : nnet::padding2d_config {
     static const unsigned in_height = OUT_HEIGHT_36;
     static const unsigned in_width = OUT_WIDTH_36;
+    static const unsigned data_transfer = 1;
     static const unsigned n_chan = N_FILT_36;
     static const unsigned out_height = OUT_HEIGHT_64;
     static const unsigned out_width = OUT_WIDTH_64;
@@ -716,6 +759,8 @@ struct config40 : nnet::conv2d_config {
     static const unsigned pad_right = 0;
     static const unsigned in_height = OUT_HEIGHT_64;
     static const unsigned in_width = OUT_WIDTH_64;
+    static const unsigned data_transfer_in = 1;
+    static const unsigned data_transfer_out = 1;
     static const unsigned n_chan = N_CHAN_64;
     static const unsigned filt_height = 3;
     static const unsigned filt_width = 3;
@@ -743,6 +788,8 @@ const ap_uint<config40::filt_height * config40::filt_width> config40::pixels[] =
 // leaky_re_lu_8
 struct LeakyReLU_config43 : nnet::activ_config {
     static const unsigned n_in = OUT_HEIGHT_40*OUT_WIDTH_40*N_FILT_40;
+    static const unsigned data_transfer = 1;
+    static const unsigned n_chan = N_FILT_40;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_stream;
     static const unsigned reuse_factor = 2000;
@@ -770,6 +817,8 @@ struct config45 : nnet::dense_config {
 // leaky_re_lu_9
 struct LeakyReLU_config48 : nnet::activ_config {
     static const unsigned n_in = N_LAYER_45;
+    static const unsigned data_transfer = 1;
+    static const unsigned n_chan = N_LAYER_45;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_stream;
     static const unsigned reuse_factor = 2000;
@@ -797,6 +846,8 @@ struct config49 : nnet::dense_config {
 // leaky_re_lu_10
 struct LeakyReLU_config52 : nnet::activ_config {
     static const unsigned n_in = N_LAYER_49;
+    static const unsigned data_transfer = 1;
+    static const unsigned n_chan = N_LAYER_49;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_stream;
     static const unsigned reuse_factor = 2000;

@@ -353,11 +353,11 @@ void print_result(res_T result[SIZE], std::ostream &out, bool keep = false) {
 
 
 template<class res_T, size_t SIZE>
-void print_result_me(hls::stream<res_T> &result, std::ostream &out, bool keep = false) {
+void print_result_me(hls::stream<res_T> result[1], std::ostream &out, bool keep = false) {
     for(int i = 0; i < SIZE; i++) {
-        res_T res_pack = result.read();
+        res_T res_pack = result[0].read();
         out << res_pack << " ";
-        if (keep) result.write(res_pack);
+        if (keep) result[0].write(res_pack);
 		if(i == 255)out << std::endl;
     }
 }

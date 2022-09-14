@@ -29,7 +29,7 @@
 // Prototype of top level function for C-synthesis
 void myproject(
     hls::stream<input_t> em_barrel[N_INPUT_3_1],
-    hls::stream<result_t> &layer55_out,
+    hls::stream<result_t> layer55_out[1],
     unsigned short &const_size_in_1,
     unsigned short &const_size_out_1,
 	model_default_t w13[9216],

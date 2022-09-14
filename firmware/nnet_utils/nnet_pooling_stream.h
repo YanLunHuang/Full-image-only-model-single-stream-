@@ -332,9 +332,9 @@ template<class data_T, class res_T, typename CONFIG_T>
 }
 
 template<class data_T, class res_T, typename CONFIG_T>
-  void pooling_me(
-		    hls::stream<data_T> &data,
-		    hls::stream<res_T>  &res) { 
+  void pooling_single(
+		    hls::stream<data_T> data[1],
+		    hls::stream<res_T>  res[1]) { 
 			
       //decide the restriction
       int cal_height,cal_width;
@@ -357,13 +357,13 @@ template<class data_T, class res_T, typename CONFIG_T>
 		  //read data
 		  for(int j=0; j<cal_width; j++){
             for(int k=0; k<CONFIG_T::n_chan; k++){
-				tmpt = data.read();
+				tmpt = data[0].read();
 				memory1[j][k] = tmpt;
 			}
 		  }
 		  for(int k=0; k<CONFIG_T::n_chan; k++){
 				if(CONFIG_T::in_width > cal_width){
-					tmpt = data.read();
+					tmpt = data[0].read();
 				}
 		  }
 		  //decide which is the biggest
@@ -371,11 +371,11 @@ template<class data_T, class res_T, typename CONFIG_T>
 		  for(int j=0; j<cal_width2; j++){
 			#pragma HLS UNROLL
 			for(int k=0; k<CONFIG_T::n_chan; k++){
-				tmpt2 = data.read();
+				tmpt2 = data[0].read();
 				memory2[k] = tmpt2;
 			}
 			for(int k=0; k<CONFIG_T::n_chan; k++){
-				tmpt3 = data.read();
+				tmpt3 = data[0].read();
 				memory3[k] = tmpt3;
 			}
 			for(int k=0; k<CONFIG_T::n_chan; k++){
@@ -390,19 +390,19 @@ template<class data_T, class res_T, typename CONFIG_T>
 					#pragma HLS UNROLL
 					if(pool[m] > max)max = pool[m];
 				}
-				res.write(max);
+				res[0].write(max);
 		    }
 		  }
 		  for(int k=0; k<CONFIG_T::n_chan; k++){
 			if(CONFIG_T::in_width > cal_width){
-				tmpt4 = data.read();
+				tmpt4 = data[0].read();
 			}
 		  }
       }
 	  for(int j=0; j<CONFIG_T::in_width; j++){
 	    for(int k=0; k<CONFIG_T::n_chan; k++){
 			if(CONFIG_T::in_height > cal_height){
-				tmpt5 = data.read();
+				tmpt5 = data[0].read();
 			}
 		}
 	  }
@@ -410,7 +410,7 @@ template<class data_T, class res_T, typename CONFIG_T>
 
 
 template<class data_T, class res_T, typename CONFIG_T>
-  void pooling_me2(
+  void pooling_array(
 		    hls::stream<data_T> data[CONFIG_T::n_chan],
 		    hls::stream<res_T>  res[CONFIG_T::n_chan]) { 
 			
@@ -489,6 +489,19 @@ template<class data_T, class res_T, typename CONFIG_T>
 		}
 	  }
   }
+  
+template<class data_T, class res_T, typename CONFIG_T>
+  void pooling_switch(
+            hls::stream<data_T> data[CONFIG_T::data_transfer],
+            hls::stream<res_T>  res[CONFIG_T::data_transfer]
+) { 
+    #pragma HLS inline region
+    if(CONFIG_T::data_transfer == 1){
+        pooling_single<data_T, res_T, CONFIG_T>(data, res);
+    }else {
+        pooling_array<data_T, res_T, CONFIG_T>(data, res);
+    }
+}
 ////////////////////////////////////////////////////Dylan 2022
 
 template<class data_T, class res_T, typename CONFIG_T>
