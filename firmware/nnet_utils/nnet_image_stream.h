@@ -6,44 +6,40 @@
 
 namespace nnet {
 
+
 template<class data_T, typename CONFIG_T>
-void resize_nearest_me(
-    hls::stream<data_T> &image,
-    hls::stream<data_T> &resized
+void resize_nearest_single(
+    hls::stream<data_T> image[1],
+    hls::stream<data_T> resized[1]
 ) {
     assert(CONFIG_T::new_height % CONFIG_T::height == 0);
     assert(CONFIG_T::new_width % CONFIG_T::width == 0);
     constexpr unsigned ratio_height = CONFIG_T::new_height / CONFIG_T::height;
     constexpr unsigned ratio_width = CONFIG_T::new_width / CONFIG_T::width;
     constexpr unsigned ii = ratio_height * ratio_width;
-	data_T in_data[CONFIG_T::n_chan];
+    data_T in_data[CONFIG_T::n_chan];
     ResizeImage: for (unsigned i = 0; i < CONFIG_T::height * CONFIG_T::width; i++) {
         #pragma HLS PIPELINE II=ii
         
         for(unsigned l = 0;l < CONFIG_T::n_chan;l++) {
-			#pragma HLS UNROLL
-			in_data[l] = image.read();
-		}
+            #pragma HLS UNROLL
+            in_data[l] = image[0].read();
+        }
 
         ResizeNew: for (unsigned j = 0; j < ratio_height * ratio_width; j++) {
             #pragma HLS UNROLL
-
-            data_T out_data;
-            #pragma HLS DATA_PACK variable=out_data
             
             ResizeChan: for (unsigned k = 0; k < CONFIG_T::n_chan; k++) {
                 #pragma HLS UNROLL
-                out_data = in_data[k];
-				resized.write(out_data);
+                data_T out_data = in_data[k];
+                resized[0].write(out_data);
             }
-
-
         }
     }
 }
 
 template<class data_T, typename CONFIG_T>
-void resize_nearest_me2(
+void resize_nearest_array(
     hls::stream<data_T> image[CONFIG_T::n_chan],
     hls::stream<data_T> resized[CONFIG_T::n_chan]
 ) {
@@ -74,6 +70,18 @@ void resize_nearest_me2(
     }
 }
 
+template <class data_T, typename CONFIG_T>
+void resize_nearest_switch(
+    hls::stream<data_T> image[CONFIG_T::data_transfer],
+    hls::stream<data_T>  resized[CONFIG_T::data_transfer]
+) {
+    #pragma HLS inline region
+    if(CONFIG_T::data_transfer == 1){
+        resize_nearest_single<data_T, CONFIG_T>(image, resized);
+    }else {
+        resize_nearest_array<data_T, CONFIG_T>(image, resized);
+    }
+}
 
 template<class data_T, typename CONFIG_T>
 void resize_nearest(
