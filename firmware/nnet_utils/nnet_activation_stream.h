@@ -75,7 +75,7 @@ void relu(hls::stream<data_T> &data, hls::stream<res_T> &res) {
 }
 
 template<class data_T, class res_T, typename CONFIG_T>
-void relu_me(hls::stream<data_T> data[1], hls::stream<res_T> res[1]) {
+void relu_single(hls::stream<data_T> data[1], hls::stream<res_T> res[1]) {
     for (int i = 0; i < CONFIG_T::n_in; i++) {
          #pragma HLS PIPELINE
 
@@ -88,6 +88,43 @@ void relu_me(hls::stream<data_T> data[1], hls::stream<res_T> res[1]) {
         res[0].write(out_data);
     }
 }
+
+template<class data_T, class res_T, typename CONFIG_T>
+void relu_array(hls::stream<data_T> data[CONFIG_T::n_chan], hls::stream<res_T> res[CONFIG_T::n_chan]) {
+    ReLUActLoop: for (int i = 0; i < CONFIG_T::n_in / CONFIG_T::n_chan; i++) {
+        #pragma HLS PIPELINE
+        data_T in_data[CONFIG_T::n_chan];
+        #pragma HLS ARRAY_PARTITION variable=in_data complete
+
+        for (int j = 0; j < CONFIG_T::n_chan; j++) {
+            #pragma HLS UNROLL
+            in_data[j] = data[j].read();
+        }
+        res_T out_data;
+
+        ReLUPackLoop: for (int j = 0; j < CONFIG_T::n_chan; j++) {
+            #pragma HLS UNROLL
+            if (in_data[j] > 0) out_data = in_data[j];
+            else out_data = 0;
+            res[j].write(out_data);
+        }
+    }
+}
+
+
+template<class data_T, class res_T, typename CONFIG_T>
+void relu_switch(
+    hls::stream<data_T> data[CONFIG_T::data_transfer],
+    hls::stream<res_T>  res[CONFIG_T::data_transfer]
+) {
+    #pragma HLS inline region
+    if(CONFIG_T::data_transfer == 1){
+        relu_single<data_T, res_T, CONFIG_T>(data, res);
+    }else {
+        relu_array<data_T, res_T, CONFIG_T>(data, res);
+    }
+}
+
 
 // *************************************************
 //       Sigmoid Activation

@@ -46,7 +46,7 @@ void normalize_single(
     CONFIG_T::template product<data_T, typename CONFIG_T::scale_t,res_T>::limit(multiplier_limit);
 
     BatchNormLoop: for (int i = 0; i < CONFIG_T::n_in; i++) {
-        #pragma HLS PIPELINE II=ii
+        #pragma HLS PIPELINE II=1
 
         data_T in_data = data[0].read();
 
@@ -57,7 +57,6 @@ void normalize_single(
                 norm_index = i % CONFIG_T::n_filt;
             }
             res_T out_data = product_dense<data_T, typename CONFIG_T::scale_t,res_T>(in_data, scale[norm_index]) + bias[norm_index];
-            //out_data = CONFIG_T::template product<data_T, typename CONFIG_T::scale_t,res_T>::product(in_data, scale[norm_index]) + bias[norm_index];
             res[0].write(out_data);
     }
 }
@@ -83,7 +82,7 @@ void normalize_array(
     #pragma HLS ARRAY_PARTITION variable=out_data complete
     
     BatchNormLoop: for (int i = 0; i < CONFIG_T::n_in / CONFIG_T::n_filt; i++) {
-        #pragma HLS PIPELINE II=ii
+        #pragma HLS PIPELINE II=1
         
         for(int j=0; j < CONFIG_T::n_filt; j++){
             #pragma HLS UNROLL

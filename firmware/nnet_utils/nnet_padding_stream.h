@@ -21,7 +21,7 @@ void fill_zero_single(hls::stream<res_T> res[1]) {
     #pragma HLS INLINE
     res_T res_part;
     for (int c = 0; c < CONFIG_T::n_chan; c++) {
-        #pragma HLS UNROLL
+        #pragma HLS PIPELINE
         res_part = 0;
         res[0].write(res_part);
     }
@@ -53,7 +53,7 @@ template<class data_T, class res_T, typename CONFIG_T>
 void fill_data_single(hls::stream<data_T> data[1], hls::stream<res_T> res[1]) {
     #pragma HLS INLINE
     for (int c = 0; c < CONFIG_T::n_chan; c++) {
-        #pragma HLS UNROLL
+        #pragma HLS PIPELINE
         data_T data_part = data[0].read();
         res_T res_part = data_part;
         res[0].write(res_part);

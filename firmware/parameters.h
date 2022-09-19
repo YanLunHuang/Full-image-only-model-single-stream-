@@ -875,6 +875,8 @@ struct config53 : nnet::dense_config {
 // activation
 struct relu_config55 : nnet::activ_config {
     static const unsigned n_in = N_LAYER_53;
+    static const unsigned data_transfer = 1;
+    static const unsigned n_chan = 1;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_stream;
     static const unsigned reuse_factor = 2000;

@@ -3,7 +3,7 @@
 ================================================================
 == Vivado HLS Report for 'myproject'
 ================================================================
-* Date:           Thu Sep 15 19:15:25 2022
+* Date:           Mon Sep 19 01:20:55 2022
 
 * Version:        2019.2 (Build 2704478 on Wed Nov 06 22:10:23 MST 2019)
 * Project:        myproject_prj
@@ -29,56 +29,56 @@
     |  Latency (cycles) |  Latency (absolute) |    Interval   | Pipeline |
     |   min   |   max   |    min   |    max   |  min  |  max  |   Type   |
     +---------+---------+----------+----------+-------+-------+----------+
-    |    74643|    74643| 0.373 ms | 0.373 ms |  33350|  54482| dataflow |
+    |    69198|    69198| 0.346 ms | 0.346 ms |  15602|  54482| dataflow |
     +---------+---------+----------+----------+-------+-------+----------+
 
     + Detail: 
         * Instance: 
-        +---------------------------------------------------------------+------------------------------------------------------------+---------+---------+-----------+-----------+-------+-------+----------+
-        |                                                               |                                                            |  Latency (cycles) |   Latency (absolute)  |    Interval   | Pipeline |
-        |                            Instance                           |                           Module                           |   min   |   max   |    min    |    max    |  min  |  max  |   Type   |
-        +---------------------------------------------------------------+------------------------------------------------------------+---------+---------+-----------+-----------+-------+-------+----------+
-        |conv_2d_cl_switch_ap_fixed_ap_fixed_config13_U0                |conv_2d_cl_switch_ap_fixed_ap_fixed_config13_s              |     2611|    26101| 13.055 us |  0.131 ms |   2611|  26101|   none   |
-        |conv_2d_cl_switch_ap_fixed_ap_fixed_config4_U0                 |conv_2d_cl_switch_ap_fixed_ap_fixed_config4_s               |    10621|    38941| 53.105 us |  0.195 ms |  10621|  38941|   none   |
-        |conv_2d_cl_switch_ap_fixed_ap_fixed_config40_U0                |conv_2d_cl_switch_ap_fixed_ap_fixed_config40_s              |     6426|    41651| 32.130 us |  0.208 ms |   6426|  41651|   none   |
-        |conv_2d_cl_switch_ap_fixed_ap_fixed_config31_U0                |conv_2d_cl_switch_ap_fixed_ap_fixed_config31_s              |     9289|    39385| 46.445 us |  0.197 ms |   9289|  39385|   none   |
-        |conv_2d_cl_switch_ap_fixed_ap_fixed_config22_U0                |conv_2d_cl_switch_ap_fixed_ap_fixed_config22_s              |    15601|    54481| 78.005 us |  0.272 ms |  15601|  54481|   none   |
-        |conv_2d_cl_switch_ap_fixed_ap_fixed_config36_U0                |conv_2d_cl_switch_ap_fixed_ap_fixed_config36_s              |     3226|    38451| 16.130 us |  0.192 ms |   3226|  38451|   none   |
-        |conv_2d_cl_switch_ap_fixed_ap_fixed_config27_U0                |conv_2d_cl_switch_ap_fixed_ap_fixed_config27_s              |     4681|    34705| 23.405 us |  0.174 ms |   4681|  34705|   none   |
-        |conv_2d_cl_switch_ap_fixed_ap_fixed_config9_U0                 |conv_2d_cl_switch_ap_fixed_ap_fixed_config9_s               |     2611|    26101| 13.055 us |  0.131 ms |   2611|  26101|   none   |
-        |conv_2d_cl_switch_ap_fixed_ap_fixed_config18_U0                |conv_2d_cl_switch_ap_fixed_ap_fixed_config18_s              |      721|    39601|  3.605 us |  0.198 ms |    721|  39601|   none   |
-        |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config45_U0              |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config45_s            |     2562|     2562| 12.810 us | 12.810 us |   2562|   2562|   none   |
-        |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config49_U0              |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config49_s            |      514|      514|  2.570 us |  2.570 us |    514|    514|   none   |
-        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config17_U0        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config17_s      |    15331|    15331| 76.655 us | 76.655 us |  15331|  15331|   none   |
-        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config8_U0         |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config8_s       |    33349|    33349|  0.167 ms |  0.167 ms |  33349|  33349|   none   |
-        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config12_600_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config12_600  |      759|      759|  3.795 us |  3.795 us |    759|    759|   none   |
-        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config16_601_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config16_601  |      759|      759|  3.795 us |  3.795 us |    759|    759|   none   |
-        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config26_U0        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config26_s      |    20035|    20035|  0.100 ms |  0.100 ms |  20035|  20035|   none   |
-        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config35_U0        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config35_s      |     8915|     8915| 44.575 us | 44.575 us |   8915|   8915|   none   |
-        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config7_599_U0   |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config7_599   |     3083|     3083| 15.415 us | 15.415 us |   3083|   3083|   none   |
-        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config58_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config58_s            |      873|      873|  4.365 us |  4.365 us |    873|    873|   none   |
-        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config59_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config59_s            |      243|      243|  1.215 us |  1.215 us |    243|    243|   none   |
-        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config57_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config57_s            |      873|      873|  4.365 us |  4.365 us |    873|    873|   none   |
-        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config56_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config56_s            |     3775|     3775| 18.875 us | 18.875 us |   3775|   3775|   none   |
-        |normalize_switch_ap_fixed_ap_fixed_config3_U0                  |normalize_switch_ap_fixed_ap_fixed_config3_s                |     6161|     6161| 30.805 us | 30.805 us |   6161|   6161|   none   |
-        |resize_nearest_switch_ap_fixed_16_6_5_3_0_config2_U0           |resize_nearest_switch_ap_fixed_16_6_5_3_0_config2_s         |     3082|     3082| 15.410 us | 15.410 us |   3082|   3082|   none   |
-        |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config53_U0              |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config53_s            |      259|      259|  1.295 us |  1.295 us |    259|    259|   none   |
-        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config60_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config60_s            |    15363|    15363| 76.815 us | 76.815 us |  15363|  15363|   none   |
-        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config21_602_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config21_602  |    11651|    11651| 58.255 us | 58.255 us |  11651|  11651|   none   |
-        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config25_603_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config25_603  |    11651|    11651| 58.255 us | 58.255 us |  11651|  11651|   none   |
-        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config30_604_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config30_604  |     5379|     5379| 26.895 us | 26.895 us |   5379|   5379|   none   |
-        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config34_605_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config34_605  |     5379|     5379| 26.895 us | 26.895 us |   5379|   5379|   none   |
-        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config39_606_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config39_606  |     2307|     2307| 11.535 us | 11.535 us |   2307|   2307|   none   |
-        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config43_607_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config43_607  |     2307|     2307| 11.535 us | 11.535 us |   2307|   2307|   none   |
-        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config61_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config61_s            |     4611|     4611| 23.055 us | 23.055 us |   4611|   4611|   none   |
-        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config62_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config62_s            |     9219|     9219| 46.095 us | 46.095 us |   9219|   9219|   none   |
-        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config48_608_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config48_608  |      259|      259|  1.295 us |  1.295 us |    259|    259|   none   |
-        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config52_609_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config52_609  |      259|      259|  1.295 us |  1.295 us |    259|    259|   none   |
-        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config63_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config63_s            |     3203|     3203| 16.015 us | 16.015 us |   3203|   3203|   none   |
-        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config64_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config64_s            |     6403|     6403| 32.015 us | 32.015 us |   6403|   6403|   none   |
-        |relu_me_ap_fixed_ap_fixed_16_6_5_3_0_relu_config55_U0          |relu_me_ap_fixed_ap_fixed_16_6_5_3_0_relu_config55_s        |        1|        1|  5.000 ns |  5.000 ns |      1|      1| function |
-        |Block_ap_fixed_base_exit3123_proc_U0                           |Block_ap_fixed_base_exit3123_proc                           |        0|        0|    0 ns   |    0 ns   |      0|      0|   none   |
-        +---------------------------------------------------------------+------------------------------------------------------------+---------+---------+-----------+-----------+-------+-------+----------+
+        +---------------------------------------------------------------+------------------------------------------------------------+---------+---------+-----------+-----------+-------+-------+---------+
+        |                                                               |                                                            |  Latency (cycles) |   Latency (absolute)  |    Interval   | Pipeline|
+        |                            Instance                           |                           Module                           |   min   |   max   |    min    |    max    |  min  |  max  |   Type  |
+        +---------------------------------------------------------------+------------------------------------------------------------+---------+---------+-----------+-----------+-------+-------+---------+
+        |conv_2d_cl_switch_ap_fixed_ap_fixed_config13_U0                |conv_2d_cl_switch_ap_fixed_ap_fixed_config13_s              |     2611|    26101| 13.055 us |  0.131 ms |   2611|  26101|   none  |
+        |conv_2d_cl_switch_ap_fixed_ap_fixed_config4_U0                 |conv_2d_cl_switch_ap_fixed_ap_fixed_config4_s               |    10621|    38941| 53.105 us |  0.195 ms |  10621|  38941|   none  |
+        |conv_2d_cl_switch_ap_fixed_ap_fixed_config40_U0                |conv_2d_cl_switch_ap_fixed_ap_fixed_config40_s              |     6426|    41651| 32.130 us |  0.208 ms |   6426|  41651|   none  |
+        |conv_2d_cl_switch_ap_fixed_ap_fixed_config31_U0                |conv_2d_cl_switch_ap_fixed_ap_fixed_config31_s              |     9289|    39385| 46.445 us |  0.197 ms |   9289|  39385|   none  |
+        |conv_2d_cl_switch_ap_fixed_ap_fixed_config22_U0                |conv_2d_cl_switch_ap_fixed_ap_fixed_config22_s              |    15601|    54481| 78.005 us |  0.272 ms |  15601|  54481|   none  |
+        |conv_2d_cl_switch_ap_fixed_ap_fixed_config36_U0                |conv_2d_cl_switch_ap_fixed_ap_fixed_config36_s              |     3226|    38451| 16.130 us |  0.192 ms |   3226|  38451|   none  |
+        |conv_2d_cl_switch_ap_fixed_ap_fixed_config27_U0                |conv_2d_cl_switch_ap_fixed_ap_fixed_config27_s              |     4681|    34705| 23.405 us |  0.174 ms |   4681|  34705|   none  |
+        |conv_2d_cl_switch_ap_fixed_ap_fixed_config9_U0                 |conv_2d_cl_switch_ap_fixed_ap_fixed_config9_s               |     2611|    26101| 13.055 us |  0.131 ms |   2611|  26101|   none  |
+        |conv_2d_cl_switch_ap_fixed_ap_fixed_config18_U0                |conv_2d_cl_switch_ap_fixed_ap_fixed_config18_s              |      721|    39601|  3.605 us |  0.198 ms |    721|  39601|   none  |
+        |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config45_U0              |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config45_s            |     2562|     2562| 12.810 us | 12.810 us |   2562|   2562|   none  |
+        |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config49_U0              |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config49_s            |      514|      514|  2.570 us |  2.570 us |    514|    514|   none  |
+        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config17_U0        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config17_s      |      953|      953|  4.765 us |  4.765 us |    953|    953|   none  |
+        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config8_U0         |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config8_s       |     3865|     3865| 19.325 us | 19.325 us |   3865|   3865|   none  |
+        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config12_605_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config12_605  |      759|      759|  3.795 us |  3.795 us |    759|    759|   none  |
+        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config16_606_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config16_606  |      759|      759|  3.795 us |  3.795 us |    759|    759|   none  |
+        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config7_604_U0   |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config7_604   |     3083|     3083| 15.415 us | 15.415 us |   3083|   3083|   none  |
+        |resize_nearest_switch_ap_fixed_16_6_5_3_0_config2_U0           |resize_nearest_switch_ap_fixed_16_6_5_3_0_config2_s         |     3082|     3082| 15.410 us | 15.410 us |   3082|   3082|   none  |
+        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config26_U0        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config26_s      |    14729|    14729| 73.645 us | 73.645 us |  14729|  14729|   none  |
+        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config35_U0        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config35_s      |     6615|     6615| 33.075 us | 33.075 us |   6615|   6615|   none  |
+        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config58_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config58_s            |      873|      873|  4.365 us |  4.365 us |    873|    873|   none  |
+        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config59_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config59_s            |      243|      243|  1.215 us |  1.215 us |    243|    243|   none  |
+        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config57_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config57_s            |      873|      873|  4.365 us |  4.365 us |    873|    873|   none  |
+        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config64_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config64_s            |     6426|     6426| 32.130 us | 32.130 us |   6426|   6426|   none  |
+        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config62_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config62_s            |     9270|     9270| 46.350 us | 46.350 us |   9270|   9270|   none  |
+        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config60_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config60_s            |    15463|    15463| 77.315 us | 77.315 us |  15463|  15463|   none  |
+        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config63_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config63_s            |     3226|     3226| 16.130 us | 16.130 us |   3226|   3226|   none  |
+        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config61_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config61_s            |     4662|     4662| 23.310 us | 23.310 us |   4662|   4662|   none  |
+        |zeropad2d_cl_switch_ap_fixed_ap_fixed_config56_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config56_s            |     3775|     3775| 18.875 us | 18.875 us |   3775|   3775|   none  |
+        |normalize_switch_ap_fixed_ap_fixed_config3_U0                  |normalize_switch_ap_fixed_ap_fixed_config3_s                |     3083|     3083| 15.415 us | 15.415 us |   3083|   3083|   none  |
+        |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config53_U0              |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config53_s            |      259|      259|  1.295 us |  1.295 us |    259|    259|   none  |
+        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config21_607_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config21_607  |    11651|    11651| 58.255 us | 58.255 us |  11651|  11651|   none  |
+        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config25_608_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config25_608  |    11651|    11651| 58.255 us | 58.255 us |  11651|  11651|   none  |
+        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config30_609_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config30_609  |     5379|     5379| 26.895 us | 26.895 us |   5379|   5379|   none  |
+        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config34_610_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config34_610  |     5379|     5379| 26.895 us | 26.895 us |   5379|   5379|   none  |
+        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config39_611_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config39_611  |     2307|     2307| 11.535 us | 11.535 us |   2307|   2307|   none  |
+        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config43_612_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config43_612  |     2307|     2307| 11.535 us | 11.535 us |   2307|   2307|   none  |
+        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config48_613_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config48_613  |      259|      259|  1.295 us |  1.295 us |    259|    259|   none  |
+        |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config52_614_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config52_614  |      259|      259|  1.295 us |  1.295 us |    259|    259|   none  |
+        |relu_switch_ap_fixed_ap_fixed_relu_config55_U0                 |relu_switch_ap_fixed_ap_fixed_relu_config55_s               |        1|        1|  5.000 ns |  5.000 ns |      1|      1|   none  |
+        |Block_ap_fixed_base_exit3123_proc_U0                           |Block_ap_fixed_base_exit3123_proc                           |        0|        0|    0 ns   |    0 ns   |      0|      0|   none  |
+        +---------------------------------------------------------------+------------------------------------------------------------+---------+---------+-----------+-----------+-------+-------+---------+
 
         * Loop: 
         N/A
@@ -95,20 +95,20 @@
 |DSP                  |        -|      -|        -|        -|    -|
 |Expression           |        -|      -|        0|       83|    -|
 |FIFO                 |      444|      -|    15978|    25696|    -|
-|Instance             |      238|   3613|   383759|   758446|    0|
+|Instance             |      238|   3613|   379690|   749287|    0|
 |Memory               |        -|      -|        -|        -|    -|
 |Multiplexer          |        -|      -|        -|      198|    -|
 |Register             |        -|      -|       33|        -|    -|
 +---------------------+---------+-------+---------+---------+-----+
-|Total                |      682|   3613|   399770|   784423|    0|
+|Total                |      682|   3613|   395701|   775264|    0|
 +---------------------+---------+-------+---------+---------+-----+
 |Available SLR        |     1440|   2280|   788160|   394080|  320|
 +---------------------+---------+-------+---------+---------+-----+
-|Utilization SLR (%)  |       47|    158|       50|      199|    0|
+|Utilization SLR (%)  |       47|    158|       50|      196|    0|
 +---------------------+---------+-------+---------+---------+-----+
 |Available            |     4320|   6840|  2364480|  1182240|  960|
 +---------------------+---------+-------+---------+---------+-----+
-|Utilization (%)      |       15|     52|       16|       66|    0|
+|Utilization (%)      |       15|     52|       16|       65|    0|
 +---------------------+---------+-------+---------+---------+-----+
 
 + Detail: 
@@ -129,35 +129,35 @@
     |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config45_U0              |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config45_s            |        0|    256|    4401|    8861|    0|
     |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config49_U0              |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config49_s            |        0|    256|    4395|    8858|    0|
     |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config53_U0              |dense_ss_ap_fixed_ap_fixed_16_6_5_3_0_config53_s            |        1|      1|      51|     141|    0|
-    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config12_600_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config12_600  |        0|     32|     532|    1605|    0|
-    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config16_601_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config16_601  |        0|     32|     532|    1605|    0|
-    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config21_602_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config21_602  |        0|      1|      40|     152|    0|
-    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config25_603_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config25_603  |        0|      1|      40|     152|    0|
-    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config30_604_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config30_604  |        0|      1|      39|     151|    0|
-    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config34_605_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config34_605  |        0|      1|      39|     151|    0|
-    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config39_606_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config39_606  |        0|      1|      38|     150|    0|
-    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config43_607_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config43_607  |        0|      1|      37|     141|    0|
-    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config48_608_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config48_608  |        0|      1|      34|     138|    0|
-    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config52_609_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config52_609  |        0|      1|      35|     147|    0|
-    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config7_599_U0   |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config7_599   |        0|     16|     278|     855|    0|
-    |normalize_switch_ap_fixed_ap_fixed_config3_U0                  |normalize_switch_ap_fixed_ap_fixed_config3_s                |        0|      4|      93|     215|    0|
-    |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config17_U0        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config17_s      |        0|      0|    3631|    5206|    0|
-    |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config26_U0        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config26_s      |        4|      0|     261|    1162|    0|
-    |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config35_U0        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config35_s      |        4|      0|     170|     789|    0|
-    |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config8_U0         |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config8_s       |        0|      0|    1833|    2772|    0|
-    |relu_me_ap_fixed_ap_fixed_16_6_5_3_0_relu_config55_U0          |relu_me_ap_fixed_ap_fixed_16_6_5_3_0_relu_config55_s        |        0|      0|       3|      63|    0|
-    |resize_nearest_switch_ap_fixed_16_6_5_3_0_config2_U0           |resize_nearest_switch_ap_fixed_16_6_5_3_0_config2_s         |        0|      0|      96|     255|    0|
+    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config12_605_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config12_605  |        0|     32|     532|    1605|    0|
+    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config16_606_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config16_606  |        0|     32|     532|    1605|    0|
+    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config21_607_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config21_607  |        0|      1|      40|     152|    0|
+    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config25_608_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config25_608  |        0|      1|      40|     152|    0|
+    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config30_609_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config30_609  |        0|      1|      39|     151|    0|
+    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config34_610_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config34_610  |        0|      1|      39|     151|    0|
+    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config39_611_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config39_611  |        0|      1|      38|     150|    0|
+    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config43_612_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config43_612  |        0|      1|      37|     141|    0|
+    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config48_613_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config48_613  |        0|      1|      34|     138|    0|
+    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config52_614_U0  |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config52_614  |        0|      1|      35|     147|    0|
+    |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config7_604_U0   |leaky_relu_switch_ap_fixed_ap_fixed_LeakyReLU_config7_604   |        0|     16|     278|     855|    0|
+    |normalize_switch_ap_fixed_ap_fixed_config3_U0                  |normalize_switch_ap_fixed_ap_fixed_config3_s                |        0|      4|      86|     239|    0|
+    |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config17_U0        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config17_s      |        0|      0|    2589|    4716|    0|
+    |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config26_U0        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config26_s      |        4|      0|     160|     702|    0|
+    |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config35_U0        |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config35_s      |        4|      0|     151|     657|    0|
+    |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config8_U0         |pooling_switch_ap_fixed_ap_fixed_16_6_5_3_0_config8_s       |        0|      0|    1314|    2528|    0|
+    |relu_switch_ap_fixed_ap_fixed_relu_config55_U0                 |relu_switch_ap_fixed_ap_fixed_relu_config55_s               |        0|      0|       3|      72|    0|
+    |resize_nearest_switch_ap_fixed_16_6_5_3_0_config2_U0           |resize_nearest_switch_ap_fixed_16_6_5_3_0_config2_s         |        0|      0|     650|     597|    0|
     |zeropad2d_cl_switch_ap_fixed_ap_fixed_config56_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config56_s            |        0|      0|      53|     397|    0|
     |zeropad2d_cl_switch_ap_fixed_ap_fixed_config57_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config57_s            |        0|      0|      32|     693|    0|
     |zeropad2d_cl_switch_ap_fixed_ap_fixed_config58_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config58_s            |        0|      0|      31|    1212|    0|
     |zeropad2d_cl_switch_ap_fixed_ap_fixed_config59_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config59_s            |        0|      0|      26|    1204|    0|
-    |zeropad2d_cl_switch_ap_fixed_ap_fixed_config60_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config60_s            |        0|      0|     353|    1579|    0|
-    |zeropad2d_cl_switch_ap_fixed_ap_fixed_config61_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config61_s            |        0|      0|     349|    1579|    0|
-    |zeropad2d_cl_switch_ap_fixed_ap_fixed_config62_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config62_s            |        0|      0|     669|    2343|    0|
-    |zeropad2d_cl_switch_ap_fixed_ap_fixed_config63_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config63_s            |        0|      0|     661|    2331|    0|
-    |zeropad2d_cl_switch_ap_fixed_ap_fixed_config64_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config64_s            |        0|      0|    1301|    2331|    0|
+    |zeropad2d_cl_switch_ap_fixed_ap_fixed_config60_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config60_s            |        0|      0|      80|     389|    0|
+    |zeropad2d_cl_switch_ap_fixed_ap_fixed_config61_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config61_s            |        0|      0|      77|     386|    0|
+    |zeropad2d_cl_switch_ap_fixed_ap_fixed_config62_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config62_s            |        0|      0|      82|     395|    0|
+    |zeropad2d_cl_switch_ap_fixed_ap_fixed_config63_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config63_s            |        0|      0|      77|     390|    0|
+    |zeropad2d_cl_switch_ap_fixed_ap_fixed_config64_U0              |zeropad2d_cl_switch_ap_fixed_ap_fixed_config64_s            |        0|      0|      82|     395|    0|
     +---------------------------------------------------------------+------------------------------------------------------------+---------+-------+--------+--------+-----+
-    |Total                                                          |                                                            |      238|   3613|  383759|  758446|    0|
+    |Total                                                          |                                                            |      238|   3613|  379690|  749287|    0|
     +---------------------------------------------------------------+------------------------------------------------------------+---------+-------+--------+--------+-----+
 
     * DSP48E: 

@@ -246,6 +246,6 @@ void myproject(
     #pragma HLS STREAM variable=layer53_out depth=1
     nnet::dense_ss<layer52_t, layer53_t, config53>(layer52_out, layer53_out, w53, b53); // dense_2
 
-    nnet::relu_me<layer53_t, result_t, relu_config55>(layer53_out, layer55_out); // activation
+    nnet::relu_switch<layer53_t, result_t, relu_config55>(layer53_out, layer55_out); // activation
 
 }
