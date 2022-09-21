@@ -128,7 +128,7 @@ int main(int argc, char **argv)
 
       //hls-fpga-machine-learning insert data
       hls::stream<input_t> em_barrel[N_INPUT_3_1];
-      nnet::copy_data_me2<float, input_t, 0, N_INPUT_1_1*N_INPUT_2_1*N_INPUT_3_1,N_INPUT_3_1>(in, em_barrel);
+      nnet::copy_data_switch<float, input_t, 0, N_INPUT_1_1*N_INPUT_2_1*N_INPUT_3_1,N_INPUT_3_1>(in, em_barrel);
       hls::stream<result_t> layer55_out[1];
 
       //hls-fpga-machine-learning insert top-level-function
@@ -144,12 +144,12 @@ int main(int argc, char **argv)
         std::cout << std::endl;
         std::cout << "Quantized predictions" << std::endl;
         //hls-fpga-machine-learning insert quantized
-        nnet::print_result_me<result_t, N_LAYER_53>(layer55_out, std::cout, true);
+        nnet::print_result_switch<result_t, N_LAYER_53, 1>(layer55_out, std::cout, true);
       }
       e++;
 
       //hls-fpga-machine-learning insert tb-output
-      nnet::print_result_me<result_t, N_LAYER_53>(layer55_out, fout);
+      nnet::print_result_switch<result_t, N_LAYER_53, 1>(layer55_out, fout);
 
     }
     fin.close();

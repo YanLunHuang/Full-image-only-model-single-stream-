@@ -300,33 +300,42 @@ void copy_data(std::vector<src_T> src, hls::stream<dst_T> &dst) {
     }
 }
 
-template<class src_T, class dst_T, size_t OFFSET, size_t SIZE>
-void copy_data_me(std::vector<src_T> src, hls::stream<dst_T> &dst) {
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//for switch
+template<class src_T, class dst_T, size_t OFFSET, size_t SIZE, size_t SIZE2>
+void copy_data_single(std::vector<src_T> src, hls::stream<dst_T> dst[1]) {
     typename std::vector<src_T>::const_iterator in_begin = src.cbegin() + OFFSET;
     typename std::vector<src_T>::const_iterator in_end = in_begin + SIZE;
 
-    dst_T dst_pack;
     for (typename std::vector<src_T>::const_iterator i = in_begin; i != in_end; ++i) {
-        dst_pack = dst_T(*i);
-        dst.write(dst_pack);
+        dst_T dst_pack = dst_T(*i);
+        dst[0].write(dst_pack);
     }
 }
 
 template<class src_T, class dst_T, size_t OFFSET, size_t SIZE, size_t SIZE2>
-void copy_data_me2(std::vector<src_T> src, hls::stream<dst_T> dst[SIZE2]) {
+void copy_data_array(std::vector<src_T> src, hls::stream<dst_T> dst[SIZE2]) {
     typename std::vector<src_T>::const_iterator in_begin = src.cbegin() + OFFSET;
     typename std::vector<src_T>::const_iterator in_end = in_begin + SIZE;
 
-    dst_T dst_pack;
-	int count = 0;
+    int count = 0;
     for (typename std::vector<src_T>::const_iterator i = in_begin; i != in_end; ++i) {
-        dst_pack = dst_T(*i);
+        dst_T dst_pack = dst_T(*i);
         dst[count].write(dst_pack);
-		if(count<3)count++;
-		else count=0;
+        if(count<SIZE2-1)count++;
+        else count=0;
     }
 }
 
+template<class src_T, class dst_T, size_t OFFSET, size_t SIZE, size_t SIZE2>
+void copy_data_switch(std::vector<src_T> src, hls::stream<dst_T> dst[SIZE2]) {
+    if(SIZE2==1){
+        copy_data_single<src_T, dst_T, OFFSET, SIZE, SIZE2>(src, dst);
+    }else {
+        copy_data_array <src_T, dst_T, OFFSET, SIZE, SIZE2>(src, dst);
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<class src_T, class dst_T, size_t OFFSET, size_t SIZE>
 void copy_data_axi(std::vector<src_T> src, dst_T dst[SIZE]) {
@@ -350,17 +359,39 @@ void print_result(res_T result[SIZE], std::ostream &out, bool keep = false) {
     }
     out << std::endl;
 }
-
-
-template<class res_T, size_t SIZE>
-void print_result_me(hls::stream<res_T> result[1], std::ostream &out, bool keep = false) {
-    for(int i = 0; i < SIZE; i++) {
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//for switch
+template<class res_T, size_t SIZE1, size_t SIZE2>
+void print_result_single(hls::stream<res_T> result[1], std::ostream &out, bool keep = false) {
+    for(int i = 0; i < SIZE1; i++) {
         res_T res_pack = result[0].read();
         out << res_pack << " ";
         if (keep) result[0].write(res_pack);
-		if(i == 255)out << std::endl;
+    }
+    out << std::endl;
+}
+
+template<class res_T, size_t SIZE1, size_t SIZE2>
+void print_result_array(hls::stream<res_T> result[SIZE2], std::ostream &out, bool keep = false) {
+    for(int j = 0; j < SIZE1/SIZE2; j++) {
+        for(int i = 0; i < SIZE2; i++) {
+            res_T res_pack = result[i].read();
+            out << res_pack << " ";
+            if (keep) result[i].write(res_pack);
+        }
+    }
+    out << std::endl;
+}
+
+template<class res_T, size_t SIZE1, size_t SIZE2>
+void print_result_switch(hls::stream<res_T> result[SIZE2], std::ostream &out, bool keep = false) {
+    if(SIZE2==1){
+        print_result_single<res_T, SIZE1, SIZE2>(result, out, keep);
+    }else {
+        print_result_array<res_T, SIZE1, SIZE2>(result, out, keep);
     }
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<class res_T, size_t SIZE>
 void print_result(hls::stream<res_T> &result, std::ostream &out, bool keep = false) {
